@@ -1,0 +1,11 @@
+authtoken: 2ExEHhwdp5SHks2C8VCn5NoFN3W_AT9oXDTFtCzHkPdBFFZE
+version: 2
+tunnels:
+  your_tunnel_name:
+    proto: http
+    hostname: emerging-pumped-pheasant.ngrok-free.app
+    addr: 127.0.0.1:80
+#    auth: "username:password"
+#    host_header: rewrite
+    inspect: false
+    bind_tls: false

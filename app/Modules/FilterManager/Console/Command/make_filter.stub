@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Filters;
+
+{{ uses }}
+class {{ class }} {{ interfaces }}
+{
+    {{ traits }}
+
+    public function example(Builder $query, $value): void
+    {
+        $query->where('you column', $value);
+    }
+}

@@ -1,0 +1,88 @@
+services:
+  app:
+    container_name: afin-app
+    build:
+      context: ./docker/8.3
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: '${WWWGROUP}'
+    image: afin-8.3/app
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '${APP_PORT:-80}:80'
+      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+    environment:
+
+      WWWUSER: '${WWWUSER}'
+      LARAVEL_SAIL: 1
+      APP_SERVICE: 'app'
+      XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+      IGNITION_LOCAL_SITES_PATH: '${PWD}'
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - afin-network
+    depends_on:
+      - pgsql
+      - redis
+  pgsql:
+    container_name: afin-pgsql
+    image: 'postgres:16-alpine'
+    ports:
+      - '${FORWARD_DB_PORT:-5432}:5432'
+    environment:
+      POSTGRES_ROOT_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_PORT: '${FORWARD_DB_PORT:-5432}:5432'
+      POSTGRES_ROOT_HOST: '%'
+      POSTGRES_DATABASE: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'afin-pgsql:/var/lib/postgresql'
+      - './docker/db-init-scripts:/docker-entrypoint-initdb.d'
+    networks:
+      - afin-network
+    restart: unless-stopped
+  redis:
+    container_name: afin-redis
+    image: 'redis:alpine'
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'afin-redis:/data'
+    networks:
+      - afin-network
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+  ngrok:
+    image: 'ngrok/ngrok:alpine'
+    environment:
+      NGROK_AUTHTOKEN: 2ExEHhwdp5SHks2C8VCn5NoFN3W_AT9oXDTFtCzHkPdBFFZE
+    command: "http --domain=emerging-pumped-pheasant.ngrok-free.app app:80"
+    ports:
+      - '4040:4040'
+    networks:
+      - afin-network
+    depends_on:
+      - app
+
+networks:
+  afin-network:
+    name: afin-network
+    driver: bridge
+
+volumes:
+  afin-pgsql:
+    driver: local
+  afin-redis:
+    name: afin-redis-volume
+    driver: local
+
