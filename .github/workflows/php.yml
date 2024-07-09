@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-
+    container: afin-app # Specify the Docker image here
     runs-on: ubuntu-latest
 
     steps:
