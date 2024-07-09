@@ -57,7 +57,7 @@ Generate the application key, which is used for encryption and other purposes:
 Run the database migrations to set up your database schema:
 
 ```sh
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
 ### 7. Run Tests
