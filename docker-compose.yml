@@ -27,6 +27,15 @@ services:
     depends_on:
       - pgsql
       - redis
+#  npm-pm2:
+#    container_name: npm-pm2
+#    build:
+#      context: ./docker/pm2
+#      dockerfile: Dockerfile
+#    volumes:
+#      - './var/www/html'
+#    networks:
+#      - afin-network
   pgsql:
     container_name: afin-pgsql
     image: 'postgres:16-alpine'
@@ -73,6 +82,17 @@ services:
       - afin-network
     depends_on:
       - app
+#  jenkins:
+#    image: 'jenkins/jenkins'
+#    ports:
+#      - '8080:8080'
+#      - '50000:50000'
+#    volumes:
+#      - "./docker/jenkins:/var/jenkins_home"
+#    networks:
+#      - afin-network
+#    depends_on:
+#      - app
 
 networks:
   afin-network:

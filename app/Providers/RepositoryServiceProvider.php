@@ -6,6 +6,8 @@ use App\Repositories\Core\DatabasePaginatedTransactionRepository;
 use App\Repositories\History\TransactionHistoryPaginatedRepositoryInterface;
 use App\Repositories\History\TransactionHistoryRepository;
 use App\Repositories\History\TransactionHistoryRepositoryInterface;
+use App\Repositories\ImportStatus\ImportStatusRepository;
+use App\Repositories\ImportStatus\ImportStatusRepositoryInterface;
 use App\Repositories\Position\PositionPaginatedRepositoryInterface;
 use App\Repositories\Position\PositionRepository;
 use App\Repositories\Position\PositionRepositoryInterface;
@@ -27,6 +29,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TransactionHistoryPaginatedRepositoryInterface::class, TransactionHistoryRepository::class);
         $this->app->bind(PositionRepositoryInterface::class, PositionRepository::class);
         $this->app->bind(PositionPaginatedRepositoryInterface::class, PositionRepository::class);
+        $this->app->bind(ImportStatusRepositoryInterface::class, ImportStatusRepository::class);
+
     }
 }
 

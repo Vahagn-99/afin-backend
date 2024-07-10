@@ -1,0 +1,15 @@
+apps:
+  - name: afin-api-queue-work
+    interpreter: php
+    script: artisan
+    exec_mode: fork
+    instances: 3
+    autorestart: true
+    restart_delay: 0
+    combine_logs: true
+    max_memory_restart:  "100M"
+    args:
+      - queue:work
+      - redis
+      - --tries=3
+      - --sleep=3

@@ -1,6 +1,5 @@
 <?php
 
-use PhpAmqpLib\Connection\AMQPConnectionFactory;
 
 return [
 

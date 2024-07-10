@@ -22,7 +22,7 @@ class ImportController extends Controller
             $request->validated('file'),
         )->chain([
             new SyncTransactionsWithAmoCRMContacts(),
-        ]);
+        ])->onQueue('import');
 
         return response()->json([
             'message' => 'File imported successfully'
