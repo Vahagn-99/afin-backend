@@ -1,5 +1,0 @@
-Started by user [8mha:////4HlF7tC2zdI/SDDRV1SysejBt1O0xXEy5TLW5aqfLWYtAAAAmB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAyBEgYe/dLi1CL9ssSMxPQ8AILjE9rBAAAA[0mVahagn Ghukasyan
-Running as SYSTEM
-Building in workspace /var/jenkins_home/workspace/афин
-ERROR: [GitHub Commit Status Setter] Failed to update commit state on GitHub. Ignoring exception [Cannot retrieve Git metadata for the build]
-Finished: SUCCESS
