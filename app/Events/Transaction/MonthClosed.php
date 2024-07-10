@@ -8,7 +8,7 @@ class MonthClosed
 {
     use Dispatchable;
 
-    public function __construct(public readonly string $month, public readonly string $path)
+    public function __construct(public readonly string $closedAt, public readonly array $transactions)
     {
     }
 }

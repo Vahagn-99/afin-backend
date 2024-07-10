@@ -11,5 +11,5 @@ interface TransactionHistoryRepositoryInterface
 
     public function get(int $id): array;
 
-    public function save(SaveTransactionHistoryDTO $dto): void;
+    public function save(SaveTransactionHistoryDTO $dto): int;
 }

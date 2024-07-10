@@ -16,7 +16,7 @@ class HistoryFactory extends Factory
         return [
             'from' => $this->faker->date(),
             'to' => $this->faker->date(),
-            'path' => Storage::disk('testing')->path(''),
+            'closet_at' => now()->toDateTimeString(),
             'created_at' => now()->toDateTimeString(),
         ];
     }

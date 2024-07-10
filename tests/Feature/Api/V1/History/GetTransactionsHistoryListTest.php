@@ -26,7 +26,7 @@ class GetTransactionsHistoryListTest extends TestCase
                 'id' => $history->id,
                 'from' => $history->from,
                 'to' => $history->to,
-                'path' => $history->path,
+                'closet_at' => $history->closet_at,
                 'created_at' => $history->created_at,
             ]);
         }

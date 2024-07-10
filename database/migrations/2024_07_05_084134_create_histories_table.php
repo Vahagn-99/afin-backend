@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->date('from');
             $table->date('to');
-            $table->string('path');
+            $table->string('closet_at');
             $table->timestamp('created_at')->useCurrent();
         });
     }

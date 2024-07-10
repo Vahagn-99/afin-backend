@@ -1,29 +1,30 @@
 <?php
 
-namespace Tests\Feature\Api\V1\History;
+namespace Tests\Feature\Api\V1\Transaction;
 
+use App\Models\ClosedTransaction;
 use App\Models\History;
-use App\Modules\JsonManager\Json;
 use Carbon\Carbon;
 use Carbon\Translator;
 use Tests\TestCase;
 use Tests\Traits\HasAuthUser;
 
-class GetTransactionsHistoryInMonthTest extends TestCase
+class GetClosedTransactionsTest extends TestCase
 {
     use HasAuthUser;
 
-    public function test_user_can_get_transactions_history_in_month(): void
+    public function test_user_can_get_closed_transactions(): void
     {
         // fake
         $date = '2024-07';
         $date = Carbon::parse($date);
-        $monthName = $date->setLocalTranslator(Translator::get('ru'))->monthName;
-        $path = $date->year . '_' . $monthName . '_transactions.json';
         $history = History::factory()->create([
             'from' => $date->startOfMonth()->toDateString(),
             'to' => $date->endOfMonth()->toDateString(),
-            'path' => $path
+            'closet_at' => now()->format("Y-m"),
+        ]);
+        $closedTransactions = ClosedTransaction::factory()->count(5)->create([
+            'history_id' => $history->id,
         ]);
 
         //request
@@ -31,9 +32,10 @@ class GetTransactionsHistoryInMonthTest extends TestCase
 
         //assertion
         $response->assertStatus(200);
-        $data = Json::get($path)->toArray();
-        foreach ($data as $transaction) {
-            $response->assertJsonFragment($transaction);
+        foreach ($closedTransactions as $transaction) {
+            $response->assertJsonFragment([
+                'login' => $transaction->id
+            ]);
         }
     }
 }

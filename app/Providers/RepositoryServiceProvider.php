@@ -11,11 +11,11 @@ use App\Repositories\ImportStatus\ImportStatusRepositoryInterface;
 use App\Repositories\Position\PositionPaginatedRepositoryInterface;
 use App\Repositories\Position\PositionRepository;
 use App\Repositories\Position\PositionRepositoryInterface;
+use App\Repositories\Transaction\ClosedTransactionRepository;
+use App\Repositories\Transaction\ClosedTransactionRepositoryInterface;
 use App\Repositories\Transaction\DatabaseTransactionRepositoryInterface;
 use App\Repositories\Transaction\EloquentPaginatedTransactionRepository;
 use App\Repositories\Transaction\EloquentTransactionRepository;
-use App\Repositories\Transaction\FileSystemTransactionRepositoryInterface;
-use App\Repositories\Transaction\JsonTransactionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -24,7 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(DatabaseTransactionRepositoryInterface::class, EloquentTransactionRepository::class);
         $this->app->bind(DatabasePaginatedTransactionRepository::class, EloquentPaginatedTransactionRepository::class);
-        $this->app->bind(FileSystemTransactionRepositoryInterface::class, JsonTransactionRepository::class);
+        $this->app->bind(ClosedTransactionRepositoryInterface::class, ClosedTransactionRepository::class);
         $this->app->bind(TransactionHistoryRepositoryInterface::class, TransactionHistoryRepository::class);
         $this->app->bind(TransactionHistoryPaginatedRepositoryInterface::class, TransactionHistoryRepository::class);
         $this->app->bind(PositionRepositoryInterface::class, PositionRepository::class);

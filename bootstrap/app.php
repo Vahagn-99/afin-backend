@@ -5,7 +5,6 @@ use App\Modules\FilterManager\Provider\FilterManagerServiceProvider;
 use App\Providers\AmoCRMServiceProvider;
 use App\Providers\CustomServicesProvider;
 use App\Providers\FileManagerServiceProvider;
-use App\Providers\JsonTransactionManagerServiceProvider;
 use App\Providers\PaginatorManagerServiceProvider;
 use App\Providers\RepositoryServiceProvider;
 use Illuminate\Foundation\Application;
@@ -34,7 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
         FileManagerServiceProvider::class,
         CustomServicesProvider::class,
         RepositoryServiceProvider::class,
-        JsonTransactionManagerServiceProvider::class,
         FilterManagerServiceProvider::class,
         PaginatorManagerServiceProvider::class
     ])

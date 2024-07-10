@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use App\Modules\JsonManager\Json;
+use Carbon\Carbon;
+use Carbon\Translator;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Modules\FilterManager\Filter\HasFilter;
 use App\Filters\HistoryFilter;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
  * @property string $from
  * @property string $to
- * @property string $path
+ * @property string $closet_at
  * @property string $created_at
  * @property-read string $name
  */
@@ -28,7 +28,7 @@ class History extends Model
     protected $fillable = [
         'from',
         'to',
-        'path',
+        'closet_at',
         'created_at'
     ];
 
@@ -36,10 +36,11 @@ class History extends Model
 
     public function name(): Attribute
     {
-        $dateFromPath = Cache::rememberForever('cached_history_' . $this->id, fn() => Json::nameFromPath($this->path));
+        $closedAt = Carbon::create($this->closet_at);
+        $monthName = $closedAt->setLocalTranslator(Translator::get('ru'))->monthName;
 
         return new Attribute(
-            get: fn() => "Отчет за " . $dateFromPath
+            get: fn() => "Отчет за " . ucfirst($monthName) . ' ' . $closedAt->year
         );
     }
 }

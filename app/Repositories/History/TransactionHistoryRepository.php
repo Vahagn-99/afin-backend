@@ -6,6 +6,7 @@ use App\DTO\PaginationDTO;
 use App\DTO\SaveTransactionHistoryDTO;
 use App\Models\History;
 use App\Modules\FilterManager\Filter\FiltersAggregator;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class TransactionHistoryRepository implements TransactionHistoryPaginatedRepositoryInterface
@@ -30,12 +31,13 @@ class TransactionHistoryRepository implements TransactionHistoryPaginatedReposit
         );
     }
 
-    public function save(SaveTransactionHistoryDTO $dto): void
+    public function save(SaveTransactionHistoryDTO $dto): int
     {
         $history = new History;
         $history->from = $dto->from;
         $history->to = $dto->to;
-        $history->path = $dto->path;
+        $history->closet_at = Carbon::create($dto->closet_at)->format('Y-m');
         $history->save();
+        return $history->getKey();
     }
 }

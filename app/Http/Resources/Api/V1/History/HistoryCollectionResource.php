@@ -8,19 +8,14 @@ use Illuminate\Support\Str;
 
 class HistoryCollectionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->resource->id,
             'from' => $this->resource->from,
             'to' => $this->resource->to,
-            'path' => $this->resource->path,
             'name' => $this->resource->name,
+            'closet_at' => $this->resource->closet_at,
             'created_at' => $this->resource->created_at,
         ];
     }

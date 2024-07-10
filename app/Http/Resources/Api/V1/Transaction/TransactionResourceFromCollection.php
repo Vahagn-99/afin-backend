@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources\Api\V1\Transaction;
 
+use App\Models\ClosedTransaction;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property Transaction $resource
+ * @property Transaction|ClosedTransaction $resource
  */
 class TransactionResourceFromCollection extends JsonResource
 {
