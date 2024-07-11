@@ -2,13 +2,15 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void
     {
         Schema::create('closed_transactions', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id();
+            $table->unsignedBigInteger('login');
             $table->unsignedBigInteger('lk');
             $table->decimal('deposit', 20)
                 ->default(0);
@@ -28,11 +30,6 @@ return new class extends Migration {
                 ->comment('P/L');
             $table->timestamp('created_at')->useCurrent();
 
-            $table->foreignId('contact_id')
-                ->nullable()
-                ->references('id')
-                ->on('contacts');
-
             $table->foreignId('history_id')
                 ->constrained('histories')
                 ->references('id')
@@ -40,6 +37,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table->index('history_id');
+            $table->unique('login');
         });
     }
 

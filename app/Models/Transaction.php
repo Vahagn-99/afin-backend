@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
+ * @property int $login
  * @property float $lk
  * @property string $currency
  * @property float $deposit
@@ -33,7 +34,7 @@ class Transaction extends Model
     use HasFilter;
 
     protected $fillable = [
-        'id',
+        'login',
         'lk',
         'currency',
         'deposit',
@@ -44,7 +45,6 @@ class Transaction extends Model
         'balance_end',
         'commission',
         'created_at',
-        'contact_id',
     ];
 
     public $timestamps = false;
@@ -55,8 +55,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(
             Contact::class,
-            'contact_id',
-            'id'
+            'login',
+            'login'
         );
     }
 

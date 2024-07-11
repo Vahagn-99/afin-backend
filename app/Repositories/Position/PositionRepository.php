@@ -5,21 +5,34 @@ namespace App\Repositories\Position;
 use App\DTO\PaginationDTO;
 use App\Models\Position;
 use App\Modules\FilterManager\Filter\FiltersAggregator;
-use App\Repositories\Position\PositionPaginatedRepositoryInterface;
-use Illuminate\Pagination\AbstractPaginator;
+use App\Repositories\Core\HasRelations;
+use App\Repositories\Core\RepositoryFather;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class PositionRepository implements PositionPaginatedRepositoryInterface
+class PositionRepository extends RepositoryFather implements PositionRepositoryInterface
 {
-    public function getAllPaginated(PaginationDTO $paginationDTO, ?FiltersAggregator $aggregator = null): AbstractPaginator
+    use HasRelations;
+
+    protected function setQuery(): void
     {
-        return Position::filter($aggregator)->paginate(
-            perPage: $paginationDTO->perPage,
-            page: $paginationDTO->page
-        );
+        $this->query = Position::query();
+    }
+
+    public function paginateWithFilter(PaginationDTO $paginationDTO, ?FiltersAggregator $filters = null): LengthAwarePaginator
+    {
+        return $this->getQuery()
+            ->filter($filters)
+            ->paginate(
+                perPage: $paginationDTO->perPage,
+                page: $paginationDTO->page
+            );
     }
 
     public function getAll(?FiltersAggregator $aggregator = null): array
     {
-        return Position::filter($aggregator)->get()->toArray();
+        return $this->getQuery()
+            ->filter($aggregator)
+            ->get()
+            ->toArray();
     }
 }

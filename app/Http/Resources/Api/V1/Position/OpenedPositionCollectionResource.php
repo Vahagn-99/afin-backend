@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\Position;
 
+use App\Http\Resources\Api\V1\Contact\ContactResource;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,7 +29,7 @@ class OpenedPositionCollectionResource extends JsonResource
             'float_result' => $this->resource->float_result,
             'currency' => $this->resource->currency,
             'position' => $this->resource->position,
-            'contact_id' => $this->resource->contact_id,
+            'contact' => ContactResource::make($this->whenLoaded('contact')),
         ];
     }
 }

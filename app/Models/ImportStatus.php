@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property string $id
  * @property ImportStatus $status
+ * @property int $progress
  */
 class ImportStatus extends Model
 {
@@ -18,6 +19,7 @@ class ImportStatus extends Model
     protected $fillable = [
         'id',
         'status',
+        'progress',
     ];
 
     public $incrementing = false;
@@ -32,20 +34,22 @@ class ImportStatus extends Model
         static::query()->updateOrCreate([
             'id' => $id,
             'status' => ImportStatusType::STATUS_PENDING,
+            'progress' => 0
         ]);
     }
 
     public static function importCompleted(string $id): void
     {
         static::query()->find($id)->update([
-            'status' => ImportStatusType::STATUS_COMPLETED
+            'status' => ImportStatusType::STATUS_COMPLETED,
+            'progress' => 100
         ]);
     }
 
     public static function importFailed(string $id): void
     {
         static::query()->find($id)->update([
-            'status' => ImportStatusType::STATUS_FAILED
+            'status' => ImportStatusType::STATUS_FAILED,
         ]);
     }
 }

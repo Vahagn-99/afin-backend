@@ -36,8 +36,11 @@ return [
     ],
 
     'amocrm' => [
-        'client_id'     => env('AMOCRM_CLIENT_ID'),
-        'client_secret' => env('AMOCRM_CLIENT_SECRET'),
-        'redirect_url'  => env('AMOCRM_REDIRECT_URL'),
+        'client_domain' => env('AMOCRM_CLIENT_DOMAIN', 'afininvest.amocrm.ru'),
+        'client_id' => env('AMOCRM_CLIENT_ID', '4443c2e9-0930-4397-972f-62dc4a90b88d'),
+        'client_secret' => env('AMOCRM_CLIENT_SECRET', 'ts8LzkQGyUneGhExRmw2QJvLUqe13Uc7LlZnraUrRZ3iKWSOYUYzCfdzM6EkjzKA'),
+        'redirect_url' => env('AMOCRM_REDIRECT_URL', 'https://widgets-api.dicitech.com/api/custom/amocrm/callback'),
     ]
+
+    //https://emerging-pumped-pheasant.ngrok-free.app/amocrm/webhook?client_id=&api_key=lsy50ax4Gb2jG97TV74a9I6Iryof4phI
 ];

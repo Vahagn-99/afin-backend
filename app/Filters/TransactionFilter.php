@@ -22,7 +22,7 @@ class TransactionFilter implements Sortable, Comparable
 
     public function login(Builder $query, int $value): void
     {
-        $query->where('transactions.id', $value);
+        $query->where('transactions.login', $value);
     }
 
     public function logins(Builder $query, array $logins): void
@@ -35,10 +35,5 @@ class TransactionFilter implements Sortable, Comparable
         $date = Carbon::parse($date);
         $query->whereYear('transactions.created_at', $date->year);
         $query->whereMonth('transactions.created_at', $date->month);
-    }
-
-    public function sortLogin(Builder $query, MakeSortingDTO $sort): void
-    {
-        $query->orderBy('transactions.id', $sort->direction);
     }
 }

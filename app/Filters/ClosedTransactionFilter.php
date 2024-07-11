@@ -20,23 +20,23 @@ class ClosedTransactionFilter implements Sortable, Comparable
 
     public function lk(Builder $query, int $value): void
     {
-        $query->where('transactions.lk', $value);
+        $query->where('closed_transactions.lk', $value);
     }
 
     public function login(Builder $query, int $value): void
     {
-        $query->where('transactions.id', $value);
+        $query->where('closed_transactions.login', $value);
     }
 
     public function logins(Builder $query, array $logins): void
     {
-        $query->whereIn('transactions.id', $logins);
+        $query->whereIn('closed_transactions.login', $logins);
     }
 
     public function date(Builder $query, string $date): void
     {
         $date = Carbon::parse($date);
-        $query->whereYear('transactions.created_at', $date->year);
-        $query->whereMonth('transactions.created_at', $date->month);
+        $query->whereYear('closed_transactions.created_at', $date->year);
+        $query->whereMonth('closed_transactions.created_at', $date->month);
     }
 }

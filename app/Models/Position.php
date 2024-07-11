@@ -55,9 +55,14 @@ class Position extends Model
     ];
 
     public $timestamps = false;
+
     public function contact(): BelongsTo
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(
+            Contact::class,
+            'login',
+            'login'
+        );
     }
 
     public function scopeWhereClosed(Builder $builder): Builder

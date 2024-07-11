@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('position');
             $table->unsignedBigInteger('login');
+            $table->unsignedBigInteger('position');
             $table->string('utm');
             $table->timestamp('opened_at');
             $table->timestamp('updated_at')->nullable();
@@ -23,11 +23,9 @@ return new class extends Migration {
             $table->string('reason');
             $table->decimal('float_result', 20, 8)->nullable();
             $table->string('currency');
-            $table->foreignId('contact_id')
-                ->nullable()
-                ->comment('The crm contact for this position')
-                ->constrained('contacts');
+
             // indexes
+            $table->index('login');
             $table->unique(['login','position']);
             $table->index('opened_at');
             $table->index('closed_at');

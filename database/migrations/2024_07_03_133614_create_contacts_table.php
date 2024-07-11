@@ -9,11 +9,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('contacts', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('login')->index();
             $table->string('client');
-            $table->string('manager');
-            $table->string('branch');
-            $table->string('group');
+            $table->string('manager')->nullable();
+            $table->string('group')->nullable();
+            $table->string('branch')->nullable();
+            $table->string('analytic')->nullable();
             $table->timestamp('created_at')->useCurrent();
         });
     }

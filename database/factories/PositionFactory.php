@@ -27,7 +27,6 @@ class PositionFactory extends Factory
             'float_result' => $this->faker->randomFloat(2, 1, 100),
             'currency' => strtoupper(array_rand(['rub', 'usd', 'syn'])),
             'position' => $this->faker->numberBetween(99999, 1000000),
-            'contact_id' => null,
         ];
     }
 }

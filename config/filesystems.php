@@ -67,6 +67,12 @@ return [
             'root' => storage_path('story'),
             'throw' => false,
         ],
+
+        'amocrm' => [
+            'driver' => 'local',
+            'root' => storage_path('amocrm'),
+            'throw' => false,
+        ],
     ],
 
     /*

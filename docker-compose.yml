@@ -1,6 +1,16 @@
+networks:
+  afin-network:
+    name: afin-network
+    driver: bridge
+volumes:
+  afin-pgsql:
+    driver: local
+  afin-redis:
+    name: afin-redis-volume
+    driver: local
 services:
-  app:
-    container_name: afin-app
+  php:
+    container_name: afin-php
     build:
       context: ./docker/8.3
       dockerfile: Dockerfile
@@ -27,15 +37,6 @@ services:
     depends_on:
       - pgsql
       - redis
-#  npm-pm2:
-#    container_name: npm-pm2
-#    build:
-#      context: ./docker/pm2
-#      dockerfile: Dockerfile
-#    volumes:
-#      - './var/www/html'
-#    networks:
-#      - afin-network
   pgsql:
     container_name: afin-pgsql
     image: 'postgres:16-alpine'
@@ -73,36 +74,25 @@ services:
       timeout: 5s
   ngrok:
     image: 'ngrok/ngrok:alpine'
+    container_name: afin_ngrok_server
     environment:
       NGROK_AUTHTOKEN: 2ExEHhwdp5SHks2C8VCn5NoFN3W_AT9oXDTFtCzHkPdBFFZE
-    command: "http --domain=emerging-pumped-pheasant.ngrok-free.app app:80"
+    command: "http --domain=united-gopher-amazing.ngrok-free.app nginx:80"
     ports:
       - '4040:4040'
     networks:
       - afin-network
     depends_on:
-      - app
-#  jenkins:
-#    image: 'jenkins/jenkins'
-#    ports:
-#      - '8080:8080'
-#      - '50000:50000'
-#    volumes:
-#      - "./docker/jenkins:/var/jenkins_home"
-#    networks:
-#      - afin-network
-#    depends_on:
-#      - app
-
-networks:
-  afin-network:
-    name: afin-network
-    driver: bridge
-
-volumes:
-  afin-pgsql:
-    driver: local
-  afin-redis:
-    name: afin-redis-volume
-    driver: local
+      - php
+  nginx:
+    image: nginx
+    container_name: afin_web_server
+    networks:
+      - afin-network
+    volumes:
+      - ./docker/ngrok/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "9000:9000"
+    depends_on:
+      - php
 

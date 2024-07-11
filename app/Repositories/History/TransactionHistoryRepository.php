@@ -6,26 +6,34 @@ use App\DTO\PaginationDTO;
 use App\DTO\SaveTransactionHistoryDTO;
 use App\Models\History;
 use App\Modules\FilterManager\Filter\FiltersAggregator;
+use App\Repositories\Core\RepositoryFather;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class TransactionHistoryRepository implements TransactionHistoryPaginatedRepositoryInterface
+class TransactionHistoryRepository extends RepositoryFather implements TransactionHistoryRepositoryInterface
 {
+    protected function setQuery(): void
+    {
+        $this->query = History::query();
+    }
+
     public function getAll(?FiltersAggregator $filtersAggregator = null): array
     {
-        return History::filter($filtersAggregator)
+        return $this->getQuery()->filter($filtersAggregator)
             ->get()
             ->toArray();
     }
 
     public function get(int $id): array
     {
-        return History::query()->find($id)->toArray();
+        return $this->getQuery()->find($id)->toArray();
     }
 
-    public function paginated(PaginationDTO $paginationDTO, ?FiltersAggregator $filtersAggregator = null): LengthAwarePaginator
+    public function paginateWithFilter(PaginationDTO $paginationDTO, ?FiltersAggregator $filters = null): LengthAwarePaginator
     {
-        return History::filter($filtersAggregator)->paginate(
+        return $this->getQuery()
+            ->filter($filters)
+            ->paginate(
             perPage: $paginationDTO->perPage,
             page: $paginationDTO->page,
         );

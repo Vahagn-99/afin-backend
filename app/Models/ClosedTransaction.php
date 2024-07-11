@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
+ * @property int $login
  * @property int $history_id
  * @property float $lk
  * @property string $currency
@@ -36,8 +37,9 @@ class ClosedTransaction extends Model
     public string $filter = ClosedTransactionFilter::class;
 
     protected $table = 'closed_transactions';
+
     protected $fillable = [
-        'id',
+        'login',
         'lk',
         'currency',
         'deposit',
@@ -54,13 +56,14 @@ class ClosedTransaction extends Model
 
     public $timestamps = false;
 
+    public $incrementing = false;
 
     public function contact(): BelongsTo
     {
         return $this->belongsTo(
             Contact::class,
-            'contact_id',
-            'id'
+            'login',
+            'login'
         );
     }
 
