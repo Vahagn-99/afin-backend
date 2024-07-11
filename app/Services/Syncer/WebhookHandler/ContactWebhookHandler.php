@@ -1,14 +1,21 @@
 <?php
 
-namespace App\Services\AmoCRM\WebhookHandlers;
+namespace App\Services\Syncer\WebhookHandler;
 
 use App\DTO\SaveContactDTO;
-use App\Services\AmoCRM\Api\GetContactsByLogin;
+use App\Services\Syncer\Api\UserApi;
+use App\Services\Syncer\Config\Config;
 use Exception;
 use Illuminate\Support\Arr;
 
-class ContactWebhookHandler implements ContactWebhookHandlerInterface
+readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
 {
+    public function __construct(
+        private UserApi $userApi,
+    )
+    {
+    }
+
     /**
      * @throws Exception
      */
@@ -16,11 +23,14 @@ class ContactWebhookHandler implements ContactWebhookHandlerInterface
     {
         $contact = current(current(current($data)));
         $customFields = $this->handleCustomField($contact);
+        $user = $this->userApi->get($contact['responsible_user_id']);
         return new SaveContactDTO(
             id: $contact['id'],
             name: $contact['name'],
-            login: $customFields[GetContactsByLogin::LOGIN_FIELD_ID],
-            analytic: Arr::get($customFields, GetContactsByLogin::ANALYTIC_FIELD_ID),
+            login: $customFields[Config::LOGIN_FIELD_ID],
+            analytic: Arr::get($customFields, Config::ANALYTIC_FIELD_ID),
+            manager: $user['name'],
+            branch: current($user['groups'])['name'] ?? Config::DEFAULT_BRANCH_NAME
         );
     }
 
@@ -33,12 +43,12 @@ class ContactWebhookHandler implements ContactWebhookHandlerInterface
 
         $result =
             collect($contact['custom_fields'])
-                ->whereIn('field_id', [GetContactsByLogin::LOGIN_FIELD_ID, GetContactsByLogin::ANALYTIC_FIELD_ID])
+                ->whereIn('field_id', [Config::LOGIN_FIELD_ID, Config::ANALYTIC_FIELD_ID])
                 ->pluck('values', "field_id")
                 ->map(fn($values) => current($values)['value'])
                 ->toArray();
 
-        if (!in_array(GetContactsByLogin::ANALYTIC_FIELD_ID, array_keys($result))) throw new Exception("Missing login field");
+        if (!in_array(Config::ANALYTIC_FIELD_ID, array_keys($result))) throw new Exception("Missing login field");
 
         return $result;
     }

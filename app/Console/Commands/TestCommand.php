@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\AmoCRM\Api\ContactApi;
+use App\Services\Syncer\Api\ContactApi;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -11,6 +11,6 @@ class TestCommand extends Command
 
     public function handle(ContactApi $contactApi)
     {
-        dd($contactApi->list()->toArray());
+        dd($contactApi->get()->toArray());
     }
 }

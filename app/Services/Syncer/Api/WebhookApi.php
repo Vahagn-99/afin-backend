@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\AmoCRM\Api;
+namespace App\Services\Syncer\Api;
 
 use AmoCRM\EntitiesServices\Webhooks;
 use AmoCRM\Exceptions\AmoCRMApiException;

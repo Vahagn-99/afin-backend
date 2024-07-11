@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AmoCRM\Oauth\CallbackRequest;
 use App\Models\WebhookClient;
 use App\Modules\AmoCRM\Core\Facades\Amo;
-use App\Services\AmoCRM\Api\WebhookApi;
+use App\Services\Syncer\Api\WebhookApi;
 use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller

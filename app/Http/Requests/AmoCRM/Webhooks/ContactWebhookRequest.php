@@ -11,7 +11,7 @@ class ContactWebhookRequest extends FormRequest
         return [
             'contacts.add'         => ['sometimes', 'array'],
             'contacts.update'      => ['sometimes', 'array'],
-            'contacts.delete'      => ['sometimes', 'array'],
+//            'contacts.delete'      => ['sometimes', 'array'],
             'contacts.restore'     => ['sometimes', 'array'],
             'contacts.responsible' => ['sometimes', 'array']
         ];

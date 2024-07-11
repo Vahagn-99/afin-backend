@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\AmoCRM\WebhookHandlers;
+namespace App\Services\Syncer\WebhookHandler;
 
 use App\DTO\SaveContactDTO;
 use Exception;
