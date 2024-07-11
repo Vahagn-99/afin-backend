@@ -19,6 +19,7 @@ readonly class SaveInHistory
 
     public function handle(MonthClosed $event): void
     {
+        if (!count($event->transactions)) return;
         $closedMonth = Carbon::create($event->closedAt);
         $created_at = Carbon::create($event->transactions['0']['created_at']);
         $historyId = $this->transactionHistoryRepository->save(new SaveTransactionHistoryDTO(

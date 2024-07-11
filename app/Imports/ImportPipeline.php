@@ -3,10 +3,10 @@
 namespace App\Imports;
 
 use App\DTO\RateDTO;
-use App\Events\Transaction\ImportChunkFinished;
 use App\Imports\Sheets\ClosedPositionSheetImport;
 use App\Imports\Sheets\OpenedPositionSheetImport;
 use App\Imports\Sheets\TransactionSheetImport;
+use App\Jobs\Contact\ProcessSyncUnknownContactJob;
 use App\Models\ImportStatus;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 
-class ImportManager implements ShouldQueue, WithChunkReading, WithMultipleSheets, SkipsUnknownSheets, WithEvents
+class ImportPipeline implements ShouldQueue, WithChunkReading, WithMultipleSheets, SkipsUnknownSheets, WithEvents
 {
     use RegistersEventListeners;
 
@@ -47,6 +47,7 @@ class ImportManager implements ShouldQueue, WithChunkReading, WithMultipleSheets
         info("Sheet $sheetName was skipped");
     }
 
+    // hooks
     public function beforeImport(BeforeImport $event): void
     {
         $this->progressId = uniqid();
@@ -63,8 +64,8 @@ class ImportManager implements ShouldQueue, WithChunkReading, WithMultipleSheets
         ImportStatus::importFailed($this->progressId);
     }
 
-    public function afterChunk(): void
+    public function afterChunk($event): void
     {
-        ImportChunkFinished::dispatch();
+        ProcessSyncUnknownContactJob::dispatch();
     }
 }

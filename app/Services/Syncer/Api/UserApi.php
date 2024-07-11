@@ -14,7 +14,7 @@ class UserApi
      * @throws AmoCRMoAuthApiException
      * @throws AmoCRMMissedTokenException
      */
-    public function get(int $id): array
+    public function getOne(int $id): array
     {
         return Amo::api()->users()->getOne($id, ['group'])->toArray();
     }
