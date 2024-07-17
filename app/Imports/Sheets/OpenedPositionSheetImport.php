@@ -2,6 +2,7 @@
 
 namespace App\Imports\Sheets;
 
+use App\DTO\RateDTO;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 readonly class OpenedPositionSheetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
 {
+    use HasConvertor;
+
+    public function __construct(private RateDTO $currencyRates)
+    {
+    }
+
     public function array(array $array): void
     {
         $mappedRows = [];
@@ -35,9 +42,9 @@ readonly class OpenedPositionSheetImport implements ToArray, SkipsEmptyRows, Wit
                 'action' => $row["Action"],
                 'symbol' => $row["Symbol"],
                 'lead_volume' => $row["Volume"],
-                'price' => $row["Price"],
+                'price' => $this->convert($row["Price"], $row['Currency']),
                 'reason' => $row["Reason"],
-                'float_result' => $row["Floating PL"],
+                'float_result' => $this->convert($row["Floating PL"], $row['Currency']),
                 'currency' => $row["Currency"],
             ]);
         } catch (Exception $e) {

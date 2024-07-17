@@ -35,8 +35,8 @@ class ImportPipeline implements ShouldQueue, WithChunkReading, WithMultipleSheet
     {
         return [
             'PL' => new TransactionSheetImport($this->currencies),
-            'Opened positions' => new OpenedPositionSheetImport(),
-            'Closed positions' => new ClosedPositionSheetImport(),
+            'Opened positions' => new OpenedPositionSheetImport($this->currencies),
+            'Closed positions' => new ClosedPositionSheetImport($this->currencies),
         ];
     }
 

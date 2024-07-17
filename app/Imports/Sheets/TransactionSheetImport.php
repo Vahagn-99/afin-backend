@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 readonly class TransactionSheetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
 {
-
+    use HasConvertor;
     public function __construct(private RateDTO $currencyRates)
     {
     }
@@ -39,7 +39,7 @@ readonly class TransactionSheetImport implements ToArray, SkipsEmptyRows, WithHe
                 "lk" => (int)$row['LK'],
                 "currency" => $row['Currency'],
                 "deposit" => $this->convert($row['Deposit'], $row['Currency']),
-                "withdrawal" => $row['Withdrawal'],
+                "withdrawal" => $this->convert($row['Withdrawal'], $row['Currency']),
                 "volume_lots" => $row['Volume Lots'],
                 "equity" => $this->convert($equity, $row['Currency']),
                 "balance_start" => $this->convert($balanceStart, $row['Currency']),
@@ -49,10 +49,5 @@ readonly class TransactionSheetImport implements ToArray, SkipsEmptyRows, WithHe
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
-    }
-
-    public function convert($amount, $currency): float
-    {
-        return Converter::convert(new ConvertableDTO($amount, $currency, $this->currencyRates));
     }
 }
