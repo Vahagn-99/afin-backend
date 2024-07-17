@@ -12,5 +12,13 @@ use App\Modules\FilterManager\Search\HasSearchingViaScout;
 
 class PositionFilter implements Sortable, Comparable
 {
-    use HasSorting, HasComparing;
+    use HasSorting;
+    use HasComparing;
+    use HasFilterByContact;
+    use HasFilterByManagerAcrossContact;
+
+    public function login(Builder $query, $value): void
+    {
+        $query->where('login', $value);
+    }
 }

@@ -10,11 +10,10 @@ return new class extends Migration {
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->unsignedBigInteger('login')->index();
-            $table->string('client');
-            $table->string('manager')->nullable();
-            $table->string('group')->nullable();
-            $table->string('branch')->nullable();
+            $table->unsignedBigInteger('login')->unique();
+            $table->unsignedBigInteger('manager_id')->index();
+            $table->string('name');
+            $table->string('url');
             $table->string('analytic')->nullable();
             $table->timestamp('created_at')->useCurrent();
         });

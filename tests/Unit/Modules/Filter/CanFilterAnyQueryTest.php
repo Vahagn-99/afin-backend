@@ -5,8 +5,8 @@ namespace Tests\Unit\Modules\Filter;
 use App\Modules\FilterManager\Mock\OnlyForTestingFilter;
 use Tests\TestCase;
 use App\Modules\FilterManager\FilterManager;
-use App\Modules\FilterManager\Filter\FiltersAggregator;
-use App\Modules\FilterManager\Filter\FilterableDTO;
+use App\Modules\FilterManager\Filter\FiltersAggregor;
+use App\Modules\FilterManager\Filter\MakeFilterDTO;
 use App\Modules\FilterManager\Sort\MakeSortingDTO;
 use App\Modules\FilterManager\Compare\MakeComparingDTO;
 use App\Modules\FilterManager\Search\MakeSearchingDTO;
@@ -23,8 +23,8 @@ class CanFilterAnyQueryTest extends TestCase
 
         // Prepare some mock data
         $filterableDTOs = [
-            new FilterableDTO('name', 'John'),
-            new FilterableDTO('age', 30),
+            new MakeFilterDTO('name', 'John'),
+            new MakeFilterDTO('age', 30),
         ];
         $sortableDTOs = [
             new MakeSortingDTO('created_at', 'asc'),
@@ -35,7 +35,7 @@ class CanFilterAnyQueryTest extends TestCase
         $searchableDTO = new MakeSearchingDTO('John Doe');
 
         // aggregate the filters
-        $aggregator = new FiltersAggregator;
+        $aggregator = new FiltersAggregor;
         $aggregator->addFilter($filterableDTOs[0]);
         $aggregator->addFilter($filterableDTOs[1]);
         $aggregator->addSorting($sortableDTOs[0]);

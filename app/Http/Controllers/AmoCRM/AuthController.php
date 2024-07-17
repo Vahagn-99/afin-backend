@@ -5,15 +5,16 @@ namespace App\Http\Controllers\AmoCRM;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AmoCRM\Oauth\CallbackRequest;
 use App\Models\WebhookClient;
+use App\Modules\AmoCRM\Api\Webhook\SubscriberInterface;
 use App\Modules\AmoCRM\Core\Facades\Amo;
-use App\Services\Syncer\Api\WebhookApi;
+use App\Services\Syncer\Config\Config;
 use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
 
     public function __construct(
-        private readonly WebhookApi $webhookApi
+        private readonly SubscriberInterface $webhookApi
     )
     {
     }
@@ -29,9 +30,8 @@ class AuthController extends Controller
         $webhookClient = WebhookClient::recreate();
         $this->webhookApi->subscribe(
             route('amocrm.webhook.contact') . "?client_id=$webhookClient->id&api_key=$webhookClient->api_key",
-            [WebhookApi::WEBHOOK_CONTACT_ADDED, WebhookApi::WEBHOOK_CONTACT_UPDATED]
+            [Config::CONTACT_ADDED_WEBHOOK, Config::CONTACT_UPDATED_WEBHOOK]
         );
-
         return redirect()->back();
     }
 }

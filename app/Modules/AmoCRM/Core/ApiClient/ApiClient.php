@@ -6,5 +6,5 @@ use AmoCRM\Client\AmoCRMApiClient;
 
 class ApiClient extends AmoCRMApiClient
 {
-    //
+
 }

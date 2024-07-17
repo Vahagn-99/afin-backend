@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Api\V1\ImportManagement;
 
-use App\Jobs\Transaction\SyncTransactionsWithAmoCRMContacts;
-use App\Models\Contact;
-use Carbon\Carbon;
+use App\DTO\RateDTO;
+use App\Services\Convertor\ConvertableDTO;
+use App\Services\Convertor\Converter;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tests\Traits\HasAuthUser;
@@ -15,10 +14,19 @@ class ImportDataTest extends TestCase
 {
     use HasAuthUser;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->currencyRates = new RateDTO(
+            usd: 70,
+            eur: 60,
+            cny: 120
+        );
+    }
+
     public function test_user_can_import_data_from_xlsx_file(): void
     {
         //fake
-        Queue::fake([SyncTransactionsWithAmoCRMContacts::class]);
         $path = Storage::path('test_import.xlsx');
         $file = new UploadedFile($path, 'test_import.xlsx', 'xlsx', null, true);
 
@@ -26,9 +34,9 @@ class ImportDataTest extends TestCase
         $response = $this->json('post', '/api/v1/import', [
             'file' => $file,
             'currencies' => [
-                'usd' => 70,
-                'eur' => 60,
-                'cny' => 120
+                'usd' => $this->currencyRates->usd,
+                'eur' => $this->currencyRates->eur,
+                'cny' => $this->currencyRates->cny
             ]
         ]);
 
@@ -46,11 +54,9 @@ class ImportDataTest extends TestCase
         foreach ($this->expectedTransactions() as $transaction) {
             $this->assertDatabaseHas('transactions', $transaction);
         }
-
-        Queue::assertPushed(SyncTransactionsWithAmoCRMContacts::class);
     }
 
-    public function expectedOpenedPositions(): array
+    private function expectedOpenedPositions(): array
     {
         return [
             [
@@ -188,7 +194,7 @@ class ImportDataTest extends TestCase
 
     }
 
-    public function expectedTransactions(): array
+    private function expectedTransactions(): array
     {
         return [
             [
@@ -198,10 +204,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 40000.0,
                 "withdrawal" => 0,
                 "volume_lots" => 38.23,
-                "equity" => 184179.99,
-                "balance_start" => 233989.53,
-                "balance_end" => 208343.42,
-                "commission" => -65646.11,
+                "equity" => $this->convert(184179.99, "RUB"),
+                "balance_start" => $this->convert(233989.53, "RUB"),
+                "balance_end" => $this->convert(208343.42, "RUB"),
+                "commission" => $this->convert(-65646.11, "RUB"),
             ],
             [
                 "login" => 1000001351,
@@ -210,10 +216,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 0,
-                "balance_start" => 0,
-                "balance_end" => 0,
-                "commission" => 0,
+                "equity" => $this->convert(0, "RUB"),
+                "balance_start" => $this->convert(0, "RUB"),
+                "balance_end" => $this->convert(0, "RUB"),
+                "commission" => $this->convert(0, "RUB"),
             ],
             [
                 "login" => 1000002058,
@@ -222,10 +228,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 201000.0,
                 "withdrawal" => 0,
                 "volume_lots" => 162.74,
-                "equity" => 544251.32,
-                "balance_start" => 637328.38,
-                "balance_end" => 683519.94,
-                "commission" => -154808.44,
+                "equity" => $this->convert(544251.32, "RUB"),
+                "balance_start" => $this->convert(637328.38, "RUB"),
+                "balance_end" => $this->convert(683519.94, "RUB"),
+                "commission" => $this->convert(-154808.44, "RUB"),
             ],
             [
                 "login" => 1000002852,
@@ -234,10 +240,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 4.57,
-                "equity" => 5815.69,
-                "balance_start" => 7680.65,
-                "balance_end" => 5335.16,
-                "commission" => -2345.49,
+                "equity" => $this->convert(5815.69, "RUB"),
+                "balance_start" => $this->convert(7680.65, "RUB"),
+                "balance_end" => $this->convert(5335.16, "RUB"),
+                "commission" => $this->convert(-2345.49, "RUB"),
             ],
             [
                 "login" => 1000002858,
@@ -246,10 +252,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 3.54,
-                "balance_start" => 3.54,
-                "balance_end" => 3.54,
-                "commission" => 0,
+                "equity" => $this->convert(3.54, "RUB"),
+                "balance_start" => $this->convert(3.54, "RUB"),
+                "balance_end" => $this->convert(3.54, "RUB"),
+                "commission" => $this->convert(0, "RUB"),
             ],
             [
                 "login" => 1000002862,
@@ -258,10 +264,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 58000.0,
                 "withdrawal" => 0,
                 "volume_lots" => 37.79,
-                "equity" => 57539.31,
-                "balance_start" => 17683.36,
-                "balance_end" => 52286.28,
-                "commission" => -23397.08,
+                "equity" => $this->convert(57539.31, "RUB"),
+                "balance_start" => $this->convert(17683.36, "RUB"),
+                "balance_end" => $this->convert(52286.28, "RUB"),
+                "commission" => $this->convert(-23397.08, "RUB"),
             ],
             [
                 "login" => 1000003081,
@@ -270,10 +276,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 0.41,
-                "balance_start" => 0.41,
-                "balance_end" => 0.41,
-                "commission" => 0,
+                "equity" => $this->convert(0.41, "USD"),
+                "balance_start" => $this->convert(0.41, "USD"),
+                "balance_end" => $this->convert(0.41, "USD"),
+                "commission" => $this->convert(0, "USD"),
             ],
             [
                 "login" => 1000003524,
@@ -282,10 +288,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 20.59,
-                "balance_start" => 20.59,
-                "balance_end" => 20.59,
-                "commission" => 0,
+                "equity" => $this->convert(20.59, "RUB"),
+                "balance_start" => $this->convert(20.59, "RUB"),
+                "balance_end" => $this->convert(20.59, "RUB"),
+                "commission" => $this->convert(0, "RUB"),
             ],
             [
                 "login" => 1000003525,
@@ -294,10 +300,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 0,
-                "balance_start" => 0,
-                "balance_end" => 0,
-                "commission" => 0,
+                "equity" => $this->convert(0, "RUB"),
+                "balance_start" => $this->convert(0, "RUB"),
+                "balance_end" => $this->convert(0, "RUB"),
+                "commission" => $this->convert(0, "RUB"),
             ],
             [
                 "login" => 1000003915,
@@ -306,10 +312,10 @@ class ImportDataTest extends TestCase
                 "deposit" => 0.0,
                 "withdrawal" => 0,
                 "volume_lots" => 0,
-                "equity" => 0,
-                "balance_start" => 0,
-                "balance_end" => 0,
-                "commission" => 0,
+                "equity" => $this->convert(0, "RUB"),
+                "balance_start" => $this->convert(0, "RUB"),
+                "balance_end" => $this->convert(0, "RUB"),
+                "commission" => $this->convert(0, "RUB"),
             ]
         ];
     }
@@ -449,5 +455,10 @@ class ImportDataTest extends TestCase
                 "currency" => "USD",
             ]
         ];
+    }
+
+    public function convert($amount, $currency): float
+    {
+        return Converter::convert(new ConvertableDTO($amount, $currency, $this->currencyRates));
     }
 }

@@ -3,16 +3,15 @@
 namespace App\Services\Syncer\WebhookHandler;
 
 use App\DTO\SaveContactDTO;
-use App\Services\Syncer\Api\UserApi;
 use App\Services\Syncer\Config\Config;
-use App\Services\Syncer\Extractor\CustomFieldExtractor;
+use App\Services\Syncer\Mapper\CustomFieldFromWebhookMapper;
 use Exception;
 use Illuminate\Support\Arr;
 
 readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
 {
     public function __construct(
-        private UserApi $userApi,
+        private CustomFieldFromWebhookMapper $customFieldFromWebhookMapper,
     )
     {
     }
@@ -23,15 +22,17 @@ readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
     public function handle(array $data): SaveContactDTO
     {
         $contact = current(current(current($data)));
-        $customFields = CustomFieldExtractor::handle($contact);
-        $user = $this->userApi->getOne($contact['responsible_user_id']);
+        $customFields = $this->customFieldFromWebhookMapper->handle($contact);
+
+        if (!in_array(Config::LOGIN_FIELD_ID, array_keys($customFields))) throw new Exception("Missing login field");
+
         return new SaveContactDTO(
             id: $contact['id'],
             name: $contact['name'],
             login: $customFields[Config::LOGIN_FIELD_ID],
+            url: sprintf(config('services.amocrm.contact_url'), $contact['id']),
+            manager_id: $contact['responsible_user_id'],
             analytic: Arr::get($customFields, Config::ANALYTIC_FIELD_ID),
-            manager: $user['name'],
-            branch: current($user['groups'])['name'] ?? Config::DEFAULT_BRANCH_NAME
         );
     }
 }

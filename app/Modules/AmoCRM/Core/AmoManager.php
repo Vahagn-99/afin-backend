@@ -8,30 +8,29 @@ use App\Modules\AmoCRM\Core\ApiClient\ApiClient;
 use App\Modules\AmoCRM\Core\ManageAccessToken\AccessTokenManagerInterface;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-readonly class AmoManager
+class AmoManager implements AmoManagerInterface
 {
     public function __construct(
-        private ApiClient                   $client,
-        private AccessTokenManagerInterface $tokenManager,
-        private AuthManagerInterface        $authManager
+        private readonly ApiClient                   $apiClientManager,
+        private readonly AccessTokenManagerInterface $tokenManager,
+        private readonly AuthManagerInterface        $authManager
     )
     {
     }
 
-    public function reConnect(): AmoCRMApiClient
+    private function reConnect(): void
     {
-        $this->client->setAccountBaseDomain(config('services.amocrm.client_domain'));
-        $this->client->setAccessToken($this->tokenManager->getAccessToken());
-        $this->client->onAccessTokenRefresh(function (AccessTokenInterface $accessToken) {
+        $this->apiClientManager->setAccountBaseDomain(config('services.amocrm.client_domain'));
+        $this->apiClientManager->setAccessToken($this->tokenManager->getAccessToken());
+        $this->apiClientManager->onAccessTokenRefresh(function (AccessTokenInterface $accessToken) {
             $this->tokenManager->saveAccessToken($accessToken);
         });
-        return $this->client;
     }
 
     public function api(): AmoCRMApiClient
     {
         $this->reConnect();
-        return $this->client;
+        return $this->apiClientManager;
     }
 
     public function authenticator(): AuthManagerInterface

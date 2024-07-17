@@ -4,14 +4,14 @@ namespace App\Modules\FilterManager\Facade;
 
 use App\Modules\FilterManager\Exceptions\FilterInterfaceException;
 use App\Modules\FilterManager\Filter\FilterInterface;
-use App\Modules\FilterManager\Filter\FiltersAggregator;
+use App\Modules\FilterManager\Filter\FiltersAggregor;
 use App\Modules\FilterManager\Interfaces\FilterManagerInterface;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static Builder apply(Builder $query, FilterInterface $filter, FiltersAggregator $aggregator)
+ * @method static Builder apply(Builder $query, FilterInterface $filter, FiltersAggregor $aggregator)
  *
  * @see  FilterManagerInterface
  */
@@ -26,11 +26,11 @@ class Filter extends Facade
      * Apply filters to a model's query.
      *
      * @param string|object $model
-     * @param FiltersAggregator $filtersAggregator
+     * @param FiltersAggregor $filtersAggregator
      * @return Builder
      * @throws FilterInterfaceException
      */
-    public static function model(string|object $model, FiltersAggregator $filtersAggregator): Builder
+    public static function model(string|object $model, FiltersAggregor $filtersAggregator): Builder
     {
         // Retrieve the model instance if a class name is provided
         $model = is_string($model) ? app($model) : $model;

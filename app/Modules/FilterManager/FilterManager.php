@@ -4,9 +4,9 @@ namespace App\Modules\FilterManager;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Modules\FilterManager\Compare\Comparable;
-use App\Modules\FilterManager\Filter\FilterableDTO;
+use App\Modules\FilterManager\Filter\MakeFilterDTO;
 use App\Modules\FilterManager\Filter\FilterInterface;
-use App\Modules\FilterManager\Filter\FiltersAggregator;
+use App\Modules\FilterManager\Filter\FiltersAggregor;
 use App\Modules\FilterManager\Interfaces\FilterManagerInterface;
 use App\Modules\FilterManager\Search\Searchable;
 use App\Modules\FilterManager\Search\MakeSearchingDTO;
@@ -17,7 +17,7 @@ class FilterManager implements FilterManagerInterface
 {
     private FilterInterface $filter;
 
-    public function apply(Builder $query, FilterInterface $filter, FiltersAggregator $filters): Builder
+    public function apply(Builder $query, FilterInterface $filter, FiltersAggregor $filters): Builder
     {
         $this->filter = $filter;
         $this->useFilters($query, $filters->getFilterables());
@@ -30,7 +30,7 @@ class FilterManager implements FilterManagerInterface
 
     private function useFilters(Builder $query, array $filters): void
     {
-        /** @var FilterableDTO $filterDTO */
+        /** @var MakeFilterDTO $filterDTO */
         foreach ($filters as $filterDTO) {
             $filter = $this->toCamelCase($filterDTO->field);
             if ($this->filterExist($filter)) {

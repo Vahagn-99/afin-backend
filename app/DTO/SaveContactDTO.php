@@ -8,9 +8,9 @@ class SaveContactDTO
         public int     $id,
         public string  $name,
         public int     $login,
+        public string  $url,
+        public int     $manager_id,
         public ?string $analytic = null,
-        public ?string $manager = null,
-        public ?string $branch = null,
     )
     {
     }

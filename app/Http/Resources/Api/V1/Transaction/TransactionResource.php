@@ -3,13 +3,13 @@
 namespace App\Http\Resources\Api\V1\Transaction;
 
 use App\Http\Resources\Api\V1\Contact\ContactResource;
-use App\Models\ClosedTransaction;
+use App\Models\ArchivedTransaction;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property Transaction|ClosedTransaction $resource
+ * @property Transaction|ArchivedTransaction $resource
  */
 class TransactionResource extends JsonResource
 {

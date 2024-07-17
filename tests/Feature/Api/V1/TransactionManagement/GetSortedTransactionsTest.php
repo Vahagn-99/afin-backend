@@ -21,7 +21,8 @@ class GetSortedTransactionsTest extends TestCase
 
         // Send a GET request to your API endpoint with sorting parameters
         $response = $this->json('get', '/api/v1/transactions', ['sorts' => [
-            'login' => 'desc'
+            'login' => 'desc',
+            'contact_name' => 'desc'
         ]]);
 
         // Assert the response status is 200

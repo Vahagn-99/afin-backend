@@ -198,7 +198,7 @@ return [
         ],
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['default', 'import'],
+            'queue' => ['default', 'import', 'process_archive', 'process_calculate_rating','process_calculate_bonus'],
             'balance' => 'simple',
             'processes' => 10,
             'memory' => 128,
@@ -209,6 +209,11 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+            ],
+            'supervisor-2' => [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,

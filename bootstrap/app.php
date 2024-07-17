@@ -1,7 +1,9 @@
 <?php
 
+use App\Console\Scheduler;
 use App\Http\Middleware\BasicAuthMiddleware;
 use App\Modules\AmoCRM\Core\Providers\AmoCRMServiceProvider;
+use App\Modules\FilterManager\Provider\FilterValidationRulesProvider;
 use App\Modules\FilterManager\Provider\FilterManagerServiceProvider;
 use App\Providers\CustomServicesProvider;
 use App\Providers\FileManagerServiceProvider;
@@ -33,12 +35,14 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withProviders([
+        Scheduler::class,
         AmoCRMServiceProvider::class,
         FileManagerServiceProvider::class,
         CustomServicesProvider::class,
         RepositoryServiceProvider::class,
         FilterManagerServiceProvider::class,
         PaginatorManagerServiceProvider::class,
-        ImportManagerServiceProvider::class
+        ImportManagerServiceProvider::class,
+        FilterValidationRulesProvider::class
     ])
     ->create();

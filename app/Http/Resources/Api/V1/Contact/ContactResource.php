@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\Contact;
 
+use App\Http\Resources\Api\V1\Manager\ManagerResource;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,11 +16,12 @@ class ContactResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'client' => $this->resource->client,
-            'manager' => $this->resource->manager,
-            'group' => $this->resource->group,
-            'branch' => $this->resource->branch,
-            'analytic' => $this->resource->analytic
+            'login' => $this->resource->login,
+            'url' => $this->resource->url,
+            'name' => $this->resource->name,
+            'manager_id' => $this->resource->manager_id,
+            'analytic' => $this->resource->analytic,
+            'manager' => ManagerResource::make($this->whenLoaded('manager'))
         ];
     }
 }

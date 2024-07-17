@@ -3,9 +3,10 @@
 namespace App\Imports\Sheets;
 
 use App\DTO\RateDTO;
-use App\Services\Deposit\ConvertableDTO;
-use App\Services\Deposit\Converter;
+use App\Services\Convertor\ConvertableDTO;
+use App\Services\Convertor\Converter;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -30,22 +31,28 @@ readonly class TransactionSheetImport implements ToArray, SkipsEmptyRows, WithHe
 
     private function mapData(array &$row): void
     {
+        $equity = current(Arr::where($row, fn($value, $key) => str_contains($key, 'Equity')));
+        [$balanceStart, $balanceEnd] = array_values(Arr::where($row, fn($value, $key) => str_contains($key, 'Balance')));
         try {
-
             $row = [
                 "login" => (int)$row['Login'],
                 "lk" => (int)$row['LK'],
                 "currency" => $row['Currency'],
-                "deposit" => Converter::convert(new ConvertableDTO($row['Deposit'], $row['Currency'], $this->currencyRates)),
+                "deposit" => $this->convert($row['Deposit'], $row['Currency']),
                 "withdrawal" => $row['Withdrawal'],
                 "volume_lots" => $row['Volume Lots'],
-                "equity" => $row['Equity 30.04'],
-                "balance_start" => $row['Balance 01.04'],
-                "balance_end" => $row['Balance 30.04'],
-                "commission" => $row['P/L (+Commission)']
+                "equity" => $this->convert($equity, $row['Currency']),
+                "balance_start" => $this->convert($balanceStart, $row['Currency']),
+                "balance_end" => $this->convert($balanceEnd, $row['Currency']),
+                "commission" => $this->convert($row['P/L (+Commission)'], $row['Currency'])
             ];
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
+    }
+
+    public function convert($amount, $currency): float
+    {
+        return Converter::convert(new ConvertableDTO($amount, $currency, $this->currencyRates));
     }
 }

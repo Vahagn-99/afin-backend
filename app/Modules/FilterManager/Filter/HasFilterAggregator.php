@@ -11,10 +11,10 @@ use Illuminate\Validation\ValidationException;
 trait HasFilterAggregator
 {
 
-    public function aggregateFilters(): FiltersAggregator
+    public function aggregateFilters(): FiltersAggregor
     {
         $data = $this->validated();
-        $filters = new FiltersAggregator();
+        $filters = new FiltersAggregor();
 
         $filters->addSearching($this->validated('search'));
         foreach (Arr::get($data, 'sorts', []) as $field => $direction) {
@@ -27,7 +27,7 @@ trait HasFilterAggregator
         }
 
         foreach (Arr::get($data, 'filters', []) as $field => $value) {
-            $filters->addFilter(new FilterableDTO($field, $value));
+            $filters->addFilter(new MakeFilterDTO($field, $value));
         }
 
         return $filters;

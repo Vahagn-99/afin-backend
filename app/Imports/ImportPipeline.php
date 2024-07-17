@@ -6,7 +6,6 @@ use App\DTO\RateDTO;
 use App\Imports\Sheets\ClosedPositionSheetImport;
 use App\Imports\Sheets\OpenedPositionSheetImport;
 use App\Imports\Sheets\TransactionSheetImport;
-use App\Jobs\Contact\ProcessSyncUnknownContactJob;
 use App\Models\ImportStatus;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
@@ -66,6 +65,5 @@ class ImportPipeline implements ShouldQueue, WithChunkReading, WithMultipleSheet
 
     public function afterChunk($event): void
     {
-        ProcessSyncUnknownContactJob::dispatch();
     }
 }

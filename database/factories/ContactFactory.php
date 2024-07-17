@@ -13,14 +13,14 @@ class ContactFactory extends Factory
 
     public function definition(): array
     {
+        $id = $this->faker->numberBetween(4545, 6786786);
         return [
-            'id' => $this->faker->numberBetween(4545, 6786786),
+            'id' => $id,
             'login' => $this->faker->numberBetween(4545, 6786786),
-            'client' => $this->faker->name(),
-            'manager' => $this->faker->name(),
-            'group' => $this->faker->company(),
-            'branch' => $this->faker->name(),
+            'name' => $this->faker->name(),
+            'manager_id' => $this->faker->numberBetween(4545, 6786786),
             'analytic' => $this->faker->name(),
+            'url' => sprintf(config('services.amocrm.contact_url'), $id)
         ];
     }
 }

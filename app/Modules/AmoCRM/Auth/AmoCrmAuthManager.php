@@ -20,9 +20,13 @@ class AmoCrmAuthManager implements AuthManagerInterface
 
     public function url(): string
     {
+
         return $this->apiClient
             ->getOAuthClient()
-            ->getAuthorizeUrl(['mode' => self::AUTH_MODE_POST_MESSAGE_TYPE]);
+            ->getAuthorizeUrl([
+                'mode' => self::AUTH_MODE_POST_MESSAGE_TYPE,
+                'state' => config('app.name'),
+            ]);
     }
 
     /**
@@ -35,9 +39,9 @@ class AmoCrmAuthManager implements AuthManagerInterface
         // if no access token but there is a code from redirect
         // we can get token from that code
         $accessToken = $oauth->getAccessTokenByCode($code);
-
         if ($accessToken->hasExpired()) {
             $accessToken = $oauth->getAccessTokenByRefreshToken($accessToken);
+
         }
 
         Amo::tokenizer()->saveAccessToken($accessToken);

@@ -36,10 +36,9 @@ class SyncPositionWithContactTest extends TestCase
                 if ($contact->login === $position->login) {
                     $response->assertJsonFragment([
                         'id' => $position->id,
-                        'client' => $contact->client,
-                        'branch' => $contact->branch,
+                        'name' => $contact->name,
                         'analytic' => $contact->analytic,
-                        'manager' => $contact->manager,
+                        'manager_id' => $contact->manager_id,
                     ]);
                 }
             }
