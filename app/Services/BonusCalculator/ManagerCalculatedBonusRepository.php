@@ -55,6 +55,7 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
                 manager_name: $item->manager_name,
                 manager_branch: $item->manager_branch,
                 manager_id: $item->manager_id,
+                contact_name: $item->contact_name,
                 contact_id: $item->contact_id,
                 deposit: $item->deposit,
                 volume_lots: $item->volume_lots,

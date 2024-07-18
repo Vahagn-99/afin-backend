@@ -73,6 +73,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 manager_name: $item->manager_name,
                 manager_branch: $item->manager_branch,
                 manager_id: $item->manager_id,
+                contact_name: $item->contact_name,
                 contact_id: $item->contact_id,
                 deposit: round($item->deposit, 2),
                 volume_lots: round($item->volume_lots, 2),
