@@ -10,7 +10,6 @@ class Scheduler extends ServiceProvider
     public function boot(): void
     {
         Schedule::command('import:test-file')->everyFifteenMinutes();
-//        Schedule::command('check-schedule')->everySecond();
         Schedule::command('amo:contacts')->everyFifteenMinutes();
         Schedule::command('amo:managers')->everyFifteenMinutes();
         Schedule::command('managers-ratings-leads')->everyFifteenMinutes();
