@@ -49,6 +49,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 DB::raw('m.branch as manager_branch'),
                 DB::raw('contact_id'),
                 DB::raw('c.name as contact_name'),
+                DB::raw('c.url as contact_url'),
                 DB::raw('manager_id'),
                 DB::raw('sum(deposit) as deposit'),
                 DB::raw('sum(volume_lots) as volume_lots'),
@@ -63,6 +64,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
             ->groupBy([
                 'contact_id',
                 'c.name',
+                'c.url',
                 'manager_id',
                 'm.name',
                 'm.branch',
@@ -74,6 +76,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 manager_branch: $item->manager_branch,
                 manager_id: $item->manager_id,
                 contact_name: $item->contact_name,
+                contact_url: $item->contact_url,
                 contact_id: $item->contact_id,
                 deposit: round($item->deposit, 2),
                 volume_lots: round($item->volume_lots, 2),

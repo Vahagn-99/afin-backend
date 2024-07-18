@@ -9,6 +9,7 @@ class CalculatedManagerBonusDTO
         public string     $manager_branch,
         public int        $manager_id,
         public string     $contact_name,
+        public string     $contact_url,
         public int        $contact_id,
         public float      $deposit,
         public float      $volume_lots,
