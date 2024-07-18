@@ -41,18 +41,19 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
             ->join(DB::raw('contacts as c'), 'c.manager_id', '=', 'managers.id')
             ->join(DB::raw('transactions as t'), 't.login', '=', 'c.login')
             ->leftJoinSub($prevMonthBonusesSubQuery, 'b', 'b.manager_id', '=', 'managers.id')
-            ->groupBy([
-                'managers.name',
-                'managers.branch',
-                'managers.id',
-                'c.id',
-                'deposit',
-                'volume_lots',
-                'potential_bonus',
-                'bonus',
-                'payoff',
-                'paid',
-            ])
+//            ->groupBy([
+//                'managers.name',
+//                'managers.branch',
+//                'managers.id',
+//                'c.id',
+//                'deposit',
+//                'volume_lots',
+//                'potential_bonus',
+//                'bonus',
+//                'payoff',
+//                'paid',
+//            ])
+            ->distinct()
             ->filter($filters)
             ->get()
             ->map(fn($item) => new CalculatedManagerBonusDTO(
