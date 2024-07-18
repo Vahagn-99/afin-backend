@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Rating;
+namespace App\Console\Commands;
 
 use App\DTO\SaveManagerDTO;
 use App\Modules\AmoCRM\Api\User\UserApiInterface;

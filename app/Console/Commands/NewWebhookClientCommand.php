@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Rating;
+namespace App\Console\Commands;
 
 use App\Models\WebhookClient;
 use Illuminate\Console\Command;
