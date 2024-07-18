@@ -11,8 +11,7 @@ class ContactWebhookController extends Controller
 {
     public function __invoke(ContactWebhookRequest $request): JsonResponse
     {
-
-        ProcessHandleContactFromAmoCRMWebhookJob::dispatch($request->all())->afterResponse();
+        ProcessHandleContactFromAmoCRMWebhookJob::dispatch($request->all());
         return response()->json(["message" => 'successfully processed']);
     }
 }
