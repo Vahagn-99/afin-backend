@@ -7,6 +7,7 @@ use App\Services\Syncer\Config\Config;
 use App\Services\Syncer\Mapper\CustomFieldFromWebhookMapper;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
 {
@@ -21,6 +22,7 @@ readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
      */
     public function handle(array $data): SaveContactDTO
     {
+        Log::driver('amocrm')->debug('the webhook data', $data);
         $contact = current(current($data['contacts']));
         $customFields = $this->customFieldFromWebhookMapper->handle($contact);
 
