@@ -13,6 +13,7 @@ class CheckSchedulerWorksCommand extends Command
 
     public function handle(): void
     {
+        $this->info('Checking schedule...');
         Log::driver('debug')->info('schedule works :' . now()->format('Y-m-d H:i:s'));
     }
 }
