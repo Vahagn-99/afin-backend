@@ -22,7 +22,7 @@ class WebhookSubscriberApi implements SubscriberInterface
             //Подпишемся на веб хук добавления сделки
             $this->endpoint()->subscribe($amoWebhook);
         } catch (AmoCRMApiException $e) {
-            error_log($e);
+            dd($e->setLastRequestInfo());
         }
     }
 
