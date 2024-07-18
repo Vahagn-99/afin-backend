@@ -20,6 +20,7 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
                 'manager_bonuses.id',
                 'manager_bonuses.payoff',
                 'manager_bonuses.manager_id',
+                'manager_bonuses.contact_id',
             ])
             ->whereYear('manager_bonuses.date', '=', $prevMonth->year)
             ->whereMonth('manager_bonuses.date', '=', $prevMonth->month);
@@ -40,20 +41,19 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
             ])
             ->join(DB::raw('contacts as c'), 'c.manager_id', '=', 'managers.id')
             ->join(DB::raw('transactions as t'), 't.login', '=', 'c.login')
-            ->leftJoinSub($prevMonthBonusesSubQuery, 'b', 'b.manager_id', '=', 'managers.id')
-//            ->groupBy([
-//                'managers.name',
-//                'managers.branch',
-//                'managers.id',
-//                'c.id',
-//                'deposit',
-//                'volume_lots',
-//                'potential_bonus',
-//                'bonus',
-//                'payoff',
-//                'paid',
-//            ])
-            ->distinct()
+            ->leftJoinSub($prevMonthBonusesSubQuery, 'b', 'b.contact_id', '=', 'c.id')
+            ->groupBy([
+                'managers.name',
+                'managers.branch',
+                'managers.id',
+                'c.id',
+                'deposit',
+                'volume_lots',
+                'potential_bonus',
+                'bonus',
+                'payoff',
+                'paid',
+            ])
             ->filter($filters)
             ->get()
             ->map(fn($item) => new CalculatedManagerBonusDTO(
