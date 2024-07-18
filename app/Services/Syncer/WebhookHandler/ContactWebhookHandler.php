@@ -25,7 +25,6 @@ readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
         Log::driver('amocrm')->debug('the webhook data', $data);
         $contact = current(current($data['contacts']));
         $customFields = $this->customFieldFromWebhookMapper->handle($contact);
-
         if (!in_array(Config::LOGIN_FIELD_ID, array_keys($customFields))) throw new Exception("Missing login field");
 
         return new SaveContactDTO(
