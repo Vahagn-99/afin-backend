@@ -32,7 +32,7 @@ class ProcessCalculateRatingForClosedMonth implements ShouldQueue
         private readonly CloseMonthDTO $closeMonthDTO,
     )
     {
-        $this->onQueue('process_calculate_rating');
+        $this->onQueue('calculating.rating');
         $this->afterCommit();
 
         $this->transactionRepository = app(ArchivedTransactionDepositCalculateInterface::class);

@@ -21,7 +21,7 @@ readonly class ContactWebhookHandler implements ContactWebhookHandlerInterface
      */
     public function handle(array $data): SaveContactDTO
     {
-        $contact = current(current(current($data)));
+        $contact = current(current($data['contacts']));
         $customFields = $this->customFieldFromWebhookMapper->handle($contact);
 
         if (!in_array(Config::LOGIN_FIELD_ID, array_keys($customFields))) throw new Exception("Missing login field");

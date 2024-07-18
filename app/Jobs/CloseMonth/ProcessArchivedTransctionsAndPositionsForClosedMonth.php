@@ -20,7 +20,7 @@ class ProcessArchivedTransctionsAndPositionsForClosedMonth implements ShouldQueu
         private readonly CloseMonthDTO $closeMonthDTO,
     )
     {
-        $this->onQueue('process_archive');
+        $this->onQueue('archiving');
         $this->afterCommit();
     }
 

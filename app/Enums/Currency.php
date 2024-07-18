@@ -10,4 +10,5 @@ Currency
     const EUR = 'EUR';
     const CNY = 'CNY';
     const RUB = 'RUB';
+    const RUR = 'RUR';
 }

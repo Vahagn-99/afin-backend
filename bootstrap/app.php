@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [
             __DIR__ . '/../routes/web/web.php',
+            __DIR__ . '/../routes/external/amocrm.php',
         ],
         api: [
             __DIR__ . '/../routes/api/api.php',

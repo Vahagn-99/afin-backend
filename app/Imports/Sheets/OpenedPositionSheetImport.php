@@ -22,18 +22,27 @@ readonly class OpenedPositionSheetImport implements ToArray, SkipsEmptyRows, Wit
     {
         $mappedRows = [];
         foreach ($array as $row) {
-            $this->mapData($row);
-            $mappedRows[] = $row;
+            try {
+                $this->mapData($row);
+                $mappedRows[] = $row;
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                continue;
+            }
         }
-        DB::table('positions')->upsert($mappedRows, ['login', 'position']);
+        try {
+
+            DB::table('positions')->upsert($mappedRows, ['login', 'position']);
+        } catch (Exception $e) {
+            logger($e->getMessage(), $mappedRows);
+        }
     }
 
     private function mapData(array &$row): void
     {
         $format = 'Y.m.d H:i:s';
-
-        try {
-            $row = array_filter([
+        $row = array_filter(
+            [
                 'login' => $row["Login"],
                 'position' => $row["Position"],
                 'utm' => $row["UTM"],
@@ -46,9 +55,8 @@ readonly class OpenedPositionSheetImport implements ToArray, SkipsEmptyRows, Wit
                 'reason' => $row["Reason"],
                 'float_result' => $this->convert($row["Floating PL"], $row['Currency']),
                 'currency' => $row["Currency"],
-            ]);
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-        }
+            ],
+            fn($value) => $value || is_numeric($value)
+        );
     }
 }
