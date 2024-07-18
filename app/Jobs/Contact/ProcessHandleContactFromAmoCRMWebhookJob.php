@@ -29,7 +29,6 @@ class ProcessHandleContactFromAmoCRMWebhookJob implements ShouldQueue
     ): void
     {
         $contact = $webhookHandler->handle($this->data);
-        dd($contact);
         $contactRepository->save($contact);
     }
 
