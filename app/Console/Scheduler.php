@@ -15,5 +15,6 @@ class Scheduler extends ServiceProvider
         Schedule::command('amo:managers')->everyFifteenMinutes();
         Schedule::command('managers-ratings-leads')->everyFifteenMinutes();
         Schedule::command('managers-ratings-deposit')->everyFifteenMinutes();
+        Schedule::command('amo:reload-webhook')->everySixHours();
     }
 }
