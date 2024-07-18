@@ -47,15 +47,10 @@ class WebhookClient extends Model
     public static function recreate(): WebhookClient
     {
         /** @var WebhookClient|null $old */
-        $old = static::currentValid()->first();
-        if ($old) {
-            $new = $old->replicate(['created_at', 'api_key']);
-            $old->delete();
-        } else {
-            $new = new static();
-            $new->id = config('services.amocrm.client_id');
-            $new->name = config('services.amocrm.client_domain');
-        }
+        static::query()->delete();
+        $new = new static();
+        $new->id = config('services.amocrm.client_id');
+        $new->name = config('services.amocrm.client_domain');
 
         $new->api_key = Str::random(32);
         $new->save();
