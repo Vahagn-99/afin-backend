@@ -21,26 +21,15 @@ class NewWebhookClientCommand extends Command
 
     public function handle(): void
     {
-        $name = $this->ask('The name of client');
-        do {
-            $this->warn('Note: the id should be uniq...');
-            $id = $this->ask('The id of the client.');
-        } while (WebhookClient::query()->where('id', $id)->exists());
+        $webhookClient = WebhookClient::recreate();
 
-        $client = new WebhookClient;
-        $client->name = $name;
-        $client->id = $id;
-        $client->api_key = Str::random(32);
-        $client->save();
+        $this->info("Webhook token created: $webhookClient->api_key");
 
-        $this->info("Webhook token created: $client->api_key");
-
-        $this->syncAmoCRM();
+        $this->syncAmoCRM($webhookClient);
     }
 
-    private function syncAmoCRM(): void
+    private function syncAmoCRM(WebhookClient $webhookClient): void
     {
-        $webhookClient = WebhookClient::recreate();
         $this->webhookApi->subscribe(
             route('amocrm.webhook.contact') . "?client_id=$webhookClient->id&api_key=$webhookClient->api_key",
             [Config::CONTACT_ADDED_WEBHOOK, Config::CONTACT_UPDATED_WEBHOOK]
