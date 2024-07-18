@@ -42,7 +42,7 @@ class CanHandleIncomingContactWebhookTest extends TestCase
                         'responsible_user_id' => 3332,
                         'custom_fields' => [
                             [
-                                'field_id' => Config::LOGIN_FIELD_ID,
+                                'id' => Config::LOGIN_FIELD_ID,
                                 'values' => [
                                     [
                                         'value' => '56565656'
@@ -50,7 +50,7 @@ class CanHandleIncomingContactWebhookTest extends TestCase
                                 ],
                             ],
                             [
-                                'field_id' => Config::ANALYTIC_FIELD_ID,
+                                'id' => Config::ANALYTIC_FIELD_ID,
                                 'values' => [
                                     [
                                         'value' => "Аналитик 4"

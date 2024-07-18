@@ -7,7 +7,6 @@ use App\Models\Manager;
 use App\Modules\FilterManager\Filter\FiltersAggregor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use stdClass;
 
 class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusRepositoryInterface
 {
@@ -31,13 +30,13 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
                 DB::raw('managers.branch as manager_branch'),
                 DB::raw('c.id as contact_id'),
                 DB::raw('managers.id as manager_id'),
-                DB::raw('t.deposit as deposit'),
-                DB::raw('t.volume_lots as volume_lots'),
-                DB::raw('(t.deposit * 0.02) as bonus'),
-                DB::raw('(t.deposit * 0.02 - t.volume_lots * 100) as potential_bonus'),
-                DB::raw('(t.deposit * 0.02) as bonus'),
-                DB::raw('(t.volume_lots * 100) as payoff'),
-                DB::raw('b.payoff as paid'),
+                DB::raw('sum(t.deposit) as deposit'),
+                DB::raw('sum(t.volume_lots) as volume_lots'),
+                DB::raw('sum(t.deposit * 0.02) as bonus'),
+                DB::raw('sum(t.deposit * 0.02 - t.volume_lots * 100) as potential_bonus'),
+                DB::raw('sum(t.deposit * 0.02) as bonus'),
+                DB::raw('sum(t.volume_lots * 100) as payoff'),
+                DB::raw('sum(b.payoff) as paid'),
             ])
             ->join(DB::raw('contacts as c'), 'c.manager_id', '=', 'managers.id')
             ->join(DB::raw('transactions as t'), 't.login', '=', 'c.login')
@@ -45,11 +44,8 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
             ->groupBy([
                 'managers.name',
                 'managers.branch',
-                'c.id',
                 'managers.id',
-                't.deposit',
-                't.volume_lots',
-                'b.payoff'
+                'c.id',
             ])
             ->filter($filters)
             ->get()
