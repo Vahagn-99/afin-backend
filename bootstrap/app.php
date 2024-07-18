@@ -7,6 +7,7 @@ use App\Modules\FilterManager\Provider\FilterValidationRulesProvider;
 use App\Modules\FilterManager\Provider\FilterManagerServiceProvider;
 use App\Providers\CustomServicesProvider;
 use App\Providers\FileManagerServiceProvider;
+use App\Providers\HorizonServiceProvider;
 use App\Providers\ImportManagerServiceProvider;
 use App\Providers\PaginatorManagerServiceProvider;
 use App\Providers\RepositoryServiceProvider;
@@ -35,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withProviders([
         Scheduler::class,
+        HorizonServiceProvider::class,
         AmoCRMServiceProvider::class,
         FileManagerServiceProvider::class,
         CustomServicesProvider::class,
