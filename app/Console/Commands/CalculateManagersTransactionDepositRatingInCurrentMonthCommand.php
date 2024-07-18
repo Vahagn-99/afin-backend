@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Console\Commands\Rating;
+namespace App\Console\Commands;
 
 use App\DTO\SaveManagerRatingDTO;
-use App\Modules\FilterManager\Filter\MakeFilterDTO;
 use App\Modules\FilterManager\Filter\FiltersAggregor;
+use App\Modules\FilterManager\Filter\MakeFilterDTO;
 use App\Repositories\Contact\ContactRepositoryInterface;
 use App\Repositories\ManagerRating\ManagerRatingRepositoryInterface;
 use App\Repositories\Transaction\TransactionDepositCalculateInterface;
