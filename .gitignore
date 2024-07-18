@@ -5,7 +5,7 @@
 /public/storage
 /storage/*.key
 /storage/archives/*
-/storage/amocrm_access_tokens/*
+/storage/amocrm_access_tokens/*.json
 /vendor
 .env
 .env.backup
