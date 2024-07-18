@@ -28,7 +28,7 @@ class ImportPipeline implements ShouldQueue, WithChunkReading, WithMultipleSheet
 
     public function chunkSize(): int
     {
-        return 5000;
+        return 4000;
     }
 
     public function sheets(): array

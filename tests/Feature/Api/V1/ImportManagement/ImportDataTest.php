@@ -14,7 +14,8 @@ class ImportDataTest extends TestCase
 {
     use HasAuthUser;
 
-   private RateDTO $rates;
+    private RateDTO $rates;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -473,7 +474,7 @@ class ImportDataTest extends TestCase
             Currency::CNY => $this->rates->cny,
             Currency::USD => $this->rates->usd,
             Currency::EUR => $this->rates->eur,
-            Currency::RUB => 1
+            Currency::RUB, Currency::RUR => 1
         };
 
         return $amount * $priceForUnit;

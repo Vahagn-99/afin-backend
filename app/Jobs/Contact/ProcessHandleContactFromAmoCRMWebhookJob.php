@@ -11,12 +11,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessHandleContactJob implements ShouldQueue
+class ProcessHandleContactFromAmoCRMWebhookJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(private readonly array $data)
     {
+        $this->onQueue('amocrm.webhooks');
     }
 
     /**

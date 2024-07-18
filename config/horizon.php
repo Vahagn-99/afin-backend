@@ -185,7 +185,12 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => [
+                'default',
+                'calculating.rating',
+                'calculating.bonus',
+                'amocrm.webhooks'
+            ],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'maxProcesses' => 1,
@@ -198,11 +203,14 @@ return [
         ],
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['default', 'import', 'process_archive', 'process_calculate_rating','process_calculate_bonus'],
+            'queue' => [
+                'import',
+                'archiving'
+            ],
             'balance' => 'simple',
-            'processes' => 10,
-            'memory' => 128,
-            'tries' => 3,
+            'processes' => 5,
+            'memory' => 200,
+            'tries' => 2,
         ],
     ],
 
@@ -221,6 +229,9 @@ return [
         ],
 
         'local' => [
+            'supervisor-1' => [
+                'maxProcesses' => 15,
+            ],
             'supervisor-2' => [
                 'maxProcesses' => 15,
             ],

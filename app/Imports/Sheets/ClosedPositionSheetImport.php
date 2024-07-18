@@ -21,17 +21,24 @@ readonly class ClosedPositionSheetImport implements ToArray, SkipsEmptyRows, Wit
     {
         $mappedRows = [];
         foreach ($array as $row) {
-            $this->mapData($row);
-            $mappedRows[] = $row;
+            try {
+                $this->mapData($row);
+                $mappedRows[] = $row;
+            } catch (Exception) {
+                continue;
+            }
         }
-
-        DB::table('positions')->upsert($mappedRows, ['login', 'position']);
+        try {
+            DB::table('positions')->upsert($mappedRows, ['login', 'position']);
+        } catch (Exception $e) {
+            logger($e->getMessage(), $mappedRows);
+        }
     }
 
     private function mapData(array &$row): void
     {
-        try {
-            $row = array_filter([
+        $row = array_filter(
+            [
                 'login' => $row["Login"],
                 'position' => $row["Position"],
                 'utm' => $row["UTM"],
@@ -44,9 +51,8 @@ readonly class ClosedPositionSheetImport implements ToArray, SkipsEmptyRows, Wit
                 'profit' => $this->convert($row["Profit"], $row['Currency']),
                 'reason' => $row["Reason"],
                 'currency' => $row["Currency"],
-            ]);
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-        }
+            ],
+            fn($value) => $value || is_numeric($value)
+        );
     }
 }

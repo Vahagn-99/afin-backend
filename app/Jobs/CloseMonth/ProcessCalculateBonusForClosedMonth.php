@@ -19,7 +19,7 @@ class ProcessCalculateBonusForClosedMonth implements ShouldQueue
 
     public function __construct(private readonly CloseMonthDTO $closeMonthDTO)
     {
-        $this->onQueue('process_calculate_bonus');
+        $this->onQueue('calculating.bonus');
         $this->afterCommit();
     }
 
