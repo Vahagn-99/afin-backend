@@ -12,7 +12,6 @@ class ResetAdminCommand extends Command
 
     public function handle()
     {
-        $email = null;
         $password = Str::random(8);
         do {
             $email = $this->ask('What is your email?');
