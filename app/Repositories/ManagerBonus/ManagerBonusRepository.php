@@ -48,6 +48,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 DB::raw('m.name as manager_name'),
                 DB::raw('m.branch as manager_branch'),
                 DB::raw('contact_id'),
+                DB::raw('c.name as contact_name'),
                 DB::raw('manager_id'),
                 DB::raw('sum(deposit) as deposit'),
                 DB::raw('sum(volume_lots) as volume_lots'),
@@ -58,8 +59,10 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 DB::raw("(min(date) || '-' || max(date)) as date"),
             ])
             ->join(DB::raw('managers as m'), 'manager_bonuses.manager_id', '=', 'm.id')
+            ->join(DB::raw('contacts as c'), 'contacts.manager_id', '=', 'm.id')
             ->groupBy([
                 'contact_id',
+                'c.name',
                 'manager_id',
                 'm.name',
                 'm.branch',

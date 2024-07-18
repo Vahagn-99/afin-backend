@@ -30,6 +30,7 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
                 DB::raw('managers.name as manager_name'),
                 DB::raw('managers.branch as manager_branch'),
                 DB::raw('c.id as contact_id'),
+                DB::raw('c.name as contact_name'),
                 DB::raw('managers.id as manager_id'),
                 DB::raw('sum(t.deposit) as deposit'),
                 DB::raw('sum(t.volume_lots) as volume_lots'),
@@ -46,6 +47,7 @@ class ManagerCalculatedBonusRepository implements ManagerCalculatedBonusReposito
                 'managers.branch',
                 'managers.id',
                 'c.id',
+                'c.name',
             ])
             ->filter($filters)
             ->get()
