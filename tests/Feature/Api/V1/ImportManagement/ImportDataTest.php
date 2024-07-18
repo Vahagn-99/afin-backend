@@ -3,10 +3,10 @@
 namespace Tests\Feature\Api\V1\ImportManagement;
 
 use App\DTO\RateDTO;
-use App\Services\Convertor\ConvertableDTO;
-use App\Services\Convertor\Converter;
+use App\Enums\Currency;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Tests\Traits\HasAuthUser;
 
@@ -14,10 +14,11 @@ class ImportDataTest extends TestCase
 {
     use HasAuthUser;
 
+   private RateDTO $rates;
     protected function setUp(): void
     {
         parent::setUp();
-        $this->currencyRates = new RateDTO(
+        $this->rates = new RateDTO(
             usd: 70,
             eur: 60,
             cny: 120
@@ -34,9 +35,9 @@ class ImportDataTest extends TestCase
         $response = $this->json('post', '/api/v1/import', [
             'file' => $file,
             'currencies' => [
-                'usd' => $this->currencyRates->usd,
-                'eur' => $this->currencyRates->eur,
-                'cny' => $this->currencyRates->cny
+                'usd' => $this->rates->usd,
+                'eur' => $this->rates->eur,
+                'cny' => $this->rates->cny
             ]
         ]);
 
@@ -337,7 +338,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000014947",
+            [
+                "login" => "1000014947",
                 "position" => "1024898782",
                 "utm" => "24a",
                 "opened_at" => "2023-05-04 17:22:13",
@@ -350,7 +352,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000014947",
+            [
+                "login" => "1000014947",
                 "position" => "1025896957",
                 "utm" => "24a",
                 "opened_at" => "2023-06-05 14:40:35",
@@ -363,7 +366,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1100001208",
+            [
+                "login" => "1100001208",
                 "position" => "1027013265",
                 "utm" => "24a",
                 "opened_at" => "2024-04-01 18:35:40",
@@ -376,7 +380,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Mobile",
                 "currency" => "USD",
             ],
-            ["login" => "1000013516",
+            [
+                "login" => "1000013516",
                 "position" => "1029558904",
                 "utm" => "24",
                 "opened_at" => "2023-10-09 10:14:30",
@@ -389,7 +394,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000009427",
+            [
+                "login" => "1000009427",
                 "position" => "1030263057",
                 "utm" => "24b",
                 "opened_at" => "2023-11-03 15:30:11",
@@ -402,7 +408,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Mobile",
                 "currency" => "USD",
             ],
-            ["login" => "1000013516",
+            [
+                "login" => "1000013516",
                 "position" => "1030312411",
                 "utm" => "24",
                 "opened_at" => "2023-11-01 11:17:30",
@@ -415,7 +422,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000014066",
+            [
+                "login" => "1000014066",
                 "position" => "1030355622",
                 "utm" => "24",
                 "opened_at" => "2023-11-02 05:53:59",
@@ -428,7 +436,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000014066",
+            [
+                "login" => "1000014066",
                 "position" => "1030360492",
                 "utm" => "24",
                 "opened_at" => "2023-11-02 09:48:51",
@@ -441,7 +450,8 @@ class ImportDataTest extends TestCase
                 "reason" => "Client",
                 "currency" => "USD",
             ],
-            ["login" => "1000014066",
+            [
+                "login" => "1000014066",
                 "position" => "1030360768",
                 "utm" => "24",
                 "opened_at" => "2023-11-02 09:58:36",
@@ -459,6 +469,13 @@ class ImportDataTest extends TestCase
 
     public function convert($amount, $currency): float
     {
-        return Converter::convert(new ConvertableDTO($amount, $currency, $this->currencyRates));
+        $priceForUnit = match (Str::upper($currency)) {
+            Currency::CNY => $this->rates->cny,
+            Currency::USD => $this->rates->usd,
+            Currency::EUR => $this->rates->eur,
+            Currency::RUB => 1
+        };
+
+        return $amount * $priceForUnit;
     }
 }
