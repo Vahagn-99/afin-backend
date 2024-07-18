@@ -2,12 +2,15 @@
 
 namespace App\Filters;
 
-use App\Modules\FilterManager\Filter\FilterInterface;
+use App\Modules\FilterManager\Compare\Comparable;
+use App\Modules\FilterManager\Compare\HasComparing;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
-class ManagerBonusFilter implements FilterInterface
+class ManagerBonusFilter implements Comparable
 {
+    use HasComparing;
+
     public function managerId(Builder $query, $value): void
     {
         $query->where('manager_id', $value);
