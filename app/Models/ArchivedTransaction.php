@@ -30,7 +30,7 @@ class ArchivedTransaction extends Transaction
         'archive_id',
     ];
 
-    public function history(): BelongsTo
+    public function archive(): BelongsTo
     {
         return $this->belongsTo(
             Archive::class,

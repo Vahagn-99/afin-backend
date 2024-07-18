@@ -33,19 +33,6 @@ class Amo extends Facade
         return 'amocrm';
     }
 
-//    /**
-//     * @throws Exception
-//     */
-//    public static function __callStatic($method, $args): BaseEntity
-//    {
-//        $api = Amo::api();
-//        if (!(method_exists($api, $method) && is_callable([$api, $method])))
-//            throw new Exception("Call to undefined method Amo::$method()");
-//
-//        return $api->$method(...$args);
-//    }
-//
-
     public static function fake(): void
     {
         // mock access token

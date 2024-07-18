@@ -64,13 +64,13 @@ return [
 
         'history' => [
             'driver' => 'local',
-            'root' => storage_path('story'),
+            'root' => storage_path('archives'),
             'throw' => false,
         ],
 
         'amocrm' => [
             'driver' => 'local',
-            'root' => storage_path('amocrm'),
+            'root' => storage_path('amocrm_access_tokens'),
             'throw' => false,
         ],
     ],

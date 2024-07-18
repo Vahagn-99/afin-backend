@@ -18,11 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [
             __DIR__ . '/../routes/web/web.php',
-            __DIR__ . '/../routes/amocrm/amocrm.php',
         ],
         api: [
-            __DIR__ . '/../routes/api/v1/auth.php',
-            __DIR__ . '/../routes/api/v1/api.php',
+            __DIR__ . '/../routes/api/api.php',
         ],
         health: '/up',
     )

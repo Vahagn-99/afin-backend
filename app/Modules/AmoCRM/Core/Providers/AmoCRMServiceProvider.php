@@ -41,7 +41,8 @@ class AmoCRMServiceProvider extends ServiceProvider
         });
         $this->app->bind(ContactWebhookHandlerInterface::class, ContactWebhookHandler::class);
         $this->app->bind('amocrm', AmoManagerInterface::class);
-        //apis
+
+        //entity api client bindings
         $this->app->bind(SubscriberInterface::class, WebhookSubscriberApi::class);
         $this->app->bind(UserApiInterface::class, UserApi::class);
         $this->app->bind(ContactApiInterface::class, ContactApi::class);

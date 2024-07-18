@@ -33,7 +33,7 @@ class ArchivedPosition extends Position
         'archive_id'
     ];
 
-    public function history(): BelongsTo
+    public function archive(): BelongsTo
     {
         return $this->belongsTo(
             Archive::class,
