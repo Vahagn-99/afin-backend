@@ -12,15 +12,23 @@ class RefreshAmoCRMAccessToken extends Command
 
     protected $description = 'The command refresh amocrm access token';
 
-    /**
-     * @throws AmoCRMoAuthApiException
-     */
+    protected int $retry = 3;
+
     public function handle(): void
     {
-        $token = Amo::tokenizer()->getAccessToken();
-        $this->alert('Refreshing token :' . $token->getExpires());
-        $token = Amo::api()->getOAuthClient()->getAccessTokenByRefreshToken($token);
-        Amo::tokenizer()->saveAccessToken($token);
-        $this->info('Refreshed token successfully! :' . $token->getExpires());
+        try {
+            $token = Amo::tokenizer()->getAccessToken();
+            $this->info('Refreshing token ...');
+            $token = Amo::api()->getOAuthClient()->getAccessTokenByRefreshToken($token);
+            Amo::tokenizer()->saveAccessToken($token);
+            $this->info('Refreshed token successfully!');
+        } catch (AmoCRMoAuthApiException $e) {
+            $this->error($e->getMessage());
+
+            if ($this->retry > 0) {
+                --$this->retry;
+                $this->handle();
+            }
+        }
     }
 }
