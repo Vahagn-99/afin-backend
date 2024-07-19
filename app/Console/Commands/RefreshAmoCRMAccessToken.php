@@ -18,10 +18,10 @@ class RefreshAmoCRMAccessToken extends Command
     {
         try {
             $token = Amo::tokenizer()->getAccessToken();
-            $this->info('Refreshing token ...');
+            $this->info('Refreshing accessToken ...');
             $token = Amo::api()->getOAuthClient()->getAccessTokenByRefreshToken($token);
             Amo::tokenizer()->saveAccessToken($token);
-            $this->info('Refreshed token successfully!');
+            $this->info('AccessToken refreshed  successfully!');
         } catch (AmoCRMoAuthApiException $e) {
             $this->error($e->getMessage());
 
