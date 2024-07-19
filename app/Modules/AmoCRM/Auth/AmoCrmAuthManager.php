@@ -41,7 +41,6 @@ class AmoCrmAuthManager implements AuthManagerInterface
         $accessToken = $oauth->getAccessTokenByCode($code);
         if ($accessToken->hasExpired()) {
             $accessToken = $oauth->getAccessTokenByRefreshToken($accessToken);
-
         }
 
         Amo::tokenizer()->saveAccessToken($accessToken);

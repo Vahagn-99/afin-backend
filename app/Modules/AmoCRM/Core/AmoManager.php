@@ -8,12 +8,12 @@ use App\Modules\AmoCRM\Core\ApiClient\ApiClient;
 use App\Modules\AmoCRM\Core\ManageAccessToken\AccessTokenManagerInterface;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-class AmoManager implements AmoManagerInterface
+readonly class AmoManager implements AmoManagerInterface
 {
     public function __construct(
-        private readonly ApiClient                   $apiClientManager,
-        private readonly AccessTokenManagerInterface $tokenManager,
-        private readonly AuthManagerInterface        $authManager
+        private ApiClient                   $apiClientManager,
+        private AccessTokenManagerInterface $tokenManager,
+        private AuthManagerInterface        $authManager
     )
     {
     }
