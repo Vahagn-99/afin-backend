@@ -18,7 +18,9 @@ class RefreshAmoCRMAccessToken extends Command
     public function handle(): void
     {
         $token = Amo::tokenizer()->getAccessToken();
+        $this->alert('Refreshing token ...:' . $token->getToken());
         $token = Amo::api()->getOAuthClient()->getAccessTokenByRefreshToken($token);
         Amo::tokenizer()->saveAccessToken($token);
+        $this->info('Refreshed token successfully!' . $token->getToken());
     }
 }
