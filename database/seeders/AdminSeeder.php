@@ -19,11 +19,6 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('04xNyZw5'),
         ]);
 
-        $user->tokens()->create([
-            'name' => 'amocrm',
-            'token' => hash('sha256', config('auth.admin_default_access_token')),
-            'abilities' => ['*'],
-            'expires_at' => null,
-        ]);
+        $user->createToken('default')->plainTextToken;
     }
 }
