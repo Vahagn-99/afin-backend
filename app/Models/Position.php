@@ -56,6 +56,13 @@ class Position extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'profit' => 'float',
+        'price' => 'float',
+        'lead_volume' => 'float',
+        'float_result' => 'float',
+    ];
+
     public function contact(): BelongsTo
     {
         return $this->belongsTo(
