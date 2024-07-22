@@ -47,7 +47,7 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
             ->select([
                 DB::raw('m.name as manager_name'),
                 DB::raw('m.branch as manager_branch'),
-                DB::raw('c.manager_id as manager_id'),
+                DB::raw('m.id as manager_id'),
                 DB::raw('contact_id'),
                 DB::raw('c.name as contact_name'),
                 DB::raw('c.url as contact_url'),
@@ -66,9 +66,9 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 'contact_id',
                 'contact_name',
                 'contact_url',
-                'manager_bonuses.manager_id',
-                'manager_name',
-                'manager_branch',
+                'm.id',
+                'm.name',
+                'm.branch',
             ])
             ->filter($filters)
             ->get()
