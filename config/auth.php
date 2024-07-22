@@ -125,5 +125,7 @@ return [
     'basic' => [
         'username' => env('AUTH_USERNAME', 'admin'),
         'password' => env('AUTH_PASSWORD', 'admin'),
-    ]
+    ],
+
+    'admin_default_access_token' => env('ADMIN_DEFAULT_ACCESS_TOKEN', 'admin'),
 ];

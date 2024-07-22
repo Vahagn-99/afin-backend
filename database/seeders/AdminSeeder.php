@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
@@ -12,9 +13,17 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('password'),
+        /** @var User|Authenticatable $user */
+        $user = User::factory()->create([
+            'email' => 'admin@afin-panel.ru',
+            'password' => bcrypt('04xNyZw5'),
+        ]);
+
+        $user->tokens()->create([
+            'name' => 'amocrm',
+            'token' => config('auth.admin_default_access_token'),
+            'abilities' => ['*'],
+            'expires_at' => null,
         ]);
     }
 }
