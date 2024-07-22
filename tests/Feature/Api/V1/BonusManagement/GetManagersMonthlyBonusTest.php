@@ -19,7 +19,7 @@ class GetManagersMonthlyBonusTest extends TestCase
     {
         $month = now()->subMonth();
         $manager = Manager::factory()->create();
-        $contact = Contact::factory()->create();
+        $contact = Contact::factory()->create(['manager_id' => $manager->id]);
         $bonuses = collect();
         $bonuses->add(
             ManagerBonus::factory()->create([
@@ -30,7 +30,7 @@ class GetManagersMonthlyBonusTest extends TestCase
         );
         $bonuses->add(
             ManagerBonus::factory()->create([
-                'date' => $month->copy()->subMonth()->format('Y-m-d'),
+                'date' => $month->format('Y-m-d'),
                 'manager_id' => $manager->id,
                 'contact_id' => $contact->id,
             ])
@@ -38,12 +38,8 @@ class GetManagersMonthlyBonusTest extends TestCase
 
         //request
         $response = $this->json('get', "/api/v1/managers/bonuses/monthly", [
-            'compares' => [
-                [
-                    'field' => 'date',
-                    'operator' => '<=',
-                    'value' => $month->format('Y-m-d'),
-                ]
+            'filters' => [
+                'date' => $month->format('Y-m-d'),
             ]
         ]);
 
@@ -59,7 +55,7 @@ class GetManagersMonthlyBonusTest extends TestCase
             'potential_bonus' => round($bonuses->sum('potential_bonus'), 2),
             'payoff' => round($bonuses->sum('payoff'), 2),
             'paid' => round($bonuses->sum('paid'), 2),
-            'date' => $month->copy()->subMonth()->format('Y-m-d') . '-' . $month->format('Y-m-d'),
+            'date' => $month->format('Y-m-d'),
         ]);
     }
 }

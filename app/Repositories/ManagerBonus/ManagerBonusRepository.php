@@ -47,27 +47,28 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
             ->select([
                 DB::raw('m.name as manager_name'),
                 DB::raw('m.branch as manager_branch'),
+                DB::raw('c.manager_id as manager_id'),
                 DB::raw('contact_id'),
                 DB::raw('c.name as contact_name'),
                 DB::raw('c.url as contact_url'),
-                DB::raw('manager_id'),
                 DB::raw('sum(deposit) as deposit'),
                 DB::raw('sum(volume_lots) as volume_lots'),
                 DB::raw('sum(bonus) as bonus'),
                 DB::raw('sum(potential_bonus) as potential_bonus'),
                 DB::raw('sum(payoff) as payoff'),
                 DB::raw('sum(paid) as paid'),
-                DB::raw("(min(date) || '-' || max(date)) as date"),
+                DB::raw("date"),
             ])
             ->join(DB::raw('managers as m'), 'manager_bonuses.manager_id', '=', 'm.id')
-            ->join(DB::raw('contacts as c'), 'contacts.manager_id', '=', 'm.id')
+            ->join(DB::raw('contacts as c'), 'manager_bonuses.contact_id', '=', 'c.id')
             ->groupBy([
+                'date',
                 'contact_id',
-                'c.name',
-                'c.url',
-                'manager_id',
-                'm.name',
-                'm.branch',
+                'contact_name',
+                'contact_url',
+                'c.manager_id',
+                'manager_name',
+                'manager_branch',
             ])
             ->filter($filters)
             ->get()
