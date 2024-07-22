@@ -21,7 +21,7 @@ class AdminSeeder extends Seeder
 
         $user->tokens()->create([
             'name' => 'amocrm',
-            'token' => config('auth.admin_default_access_token'),
+            'token' => hash('sha256', config('auth.admin_default_access_token')),
             'abilities' => ['*'],
             'expires_at' => null,
         ]);
