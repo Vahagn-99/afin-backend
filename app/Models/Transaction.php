@@ -49,6 +49,14 @@ class Transaction extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'balance_start' => 'float',
+        'balance_end' => 'float',
+        'commission' => 'float',
+        'volume_lots' => 'float',
+        'equity' => 'float',
+    ];
+
     public string $filter = TransactionFilter::class;
 
     public function contact(): BelongsTo
