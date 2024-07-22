@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
@@ -26,11 +27,9 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout(): Response
+    public function logout(Request $request): Response
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $user->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->noContent();
     }
