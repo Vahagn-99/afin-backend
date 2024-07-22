@@ -60,13 +60,13 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 DB::raw("date"),
             ])
             ->join(DB::raw('managers as m'), 'manager_bonuses.manager_id', '=', 'm.id')
-            ->join(DB::raw('contacts as c'), 'c.manager_id', '=', 'm.id')
+            ->join(DB::raw('contacts as c'), 'manager_bonuses.contact_id', '=', 'c.id')
             ->groupBy([
                 'date',
                 'contact_id',
                 'contact_name',
                 'contact_url',
-                'c.manager_id',
+                'manager_bonuses.manager_id',
                 'manager_name',
                 'manager_branch',
             ])
