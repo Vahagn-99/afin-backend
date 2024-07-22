@@ -17,12 +17,12 @@ return new class extends Migration {
                 ->constrained('managers')
                 ->references('id')
                 ->cascadeOnDelete();
-            $table->decimal('deposit');
-            $table->decimal('volume_lots');
-            $table->decimal('bonus');
-            $table->decimal('potential_bonus');
-            $table->decimal('payoff');
-            $table->decimal('paid')->default(0);
+            $table->decimal('deposit', 20);
+            $table->decimal('volume_lots', 20);
+            $table->decimal('bonus', 20);
+            $table->decimal('potential_bonus', 20);
+            $table->decimal('payoff', 20);
+            $table->decimal('paid', 20)->default(0);
             $table->date('date');
 
             //indexes

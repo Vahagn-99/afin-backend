@@ -477,6 +477,6 @@ class ImportDataTest extends TestCase
             Currency::RUB, Currency::RUR => 1
         };
 
-        return $amount * $priceForUnit;
+        return round($amount * $priceForUnit, 2);
     }
 }

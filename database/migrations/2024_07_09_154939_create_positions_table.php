@@ -17,11 +17,11 @@ return new class extends Migration {
             $table->timestamp('closed_at')->nullable();
             $table->string('action');
             $table->string('symbol');
-            $table->decimal('lead_volume', 20, 8);
-            $table->decimal('price', 20, 8);
-            $table->decimal('profit', 20, 8)->nullable();
+            $table->decimal('lead_volume', 20);
+            $table->decimal('price', 20);
+            $table->decimal('profit', 20)->nullable();
             $table->string('reason');
-            $table->decimal('float_result', 20, 8)->nullable();
+            $table->decimal('float_result', 20)->nullable();
             $table->string('currency');
 
             // indexes

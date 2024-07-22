@@ -5,8 +5,6 @@ namespace Tests\Feature\Api\V1\BonusManagement;
 use App\Models\Contact;
 use App\Models\Manager;
 use App\Models\ManagerBonus;
-use App\Models\Transaction;
-use Random\RandomException;
 use Tests\TestCase;
 use Tests\Traits\HasAuthUser;
 

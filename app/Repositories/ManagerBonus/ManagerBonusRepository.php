@@ -79,12 +79,12 @@ class ManagerBonusRepository extends RepositoryFather implements ManagerBonusRep
                 contact_name: $item->contact_name,
                 contact_url: $item->contact_url,
                 contact_id: $item->contact_id,
-                deposit: round($item->deposit, 2),
-                volume_lots: round($item->volume_lots, 2),
-                bonus: round($item->bonus, 2),
-                potential_bonus: round($item->potential_bonus, 2),
-                payoff: round($item->payoff, 2),
-                paid: round($item->paid ?? 0, 2),
+                deposit: $item->deposit,
+                volume_lots: $item->volume_lots,
+                bonus: $item->bonus,
+                potential_bonus: $item->potential_bonus,
+                payoff: $item->payoff,
+                paid: $item->paid ?? 0,
                 date: $item->date
             ))
             ->groupBy('manager_name')

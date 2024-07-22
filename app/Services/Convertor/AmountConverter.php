@@ -24,6 +24,6 @@ class AmountConverter implements ConverterInterface
             default => 1,
         };
 
-        return $convertor * $priceForUnit;
+        return round($priceForUnit * $convertor, 2);
     }
 }
